@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>雅思每日练习台</title>
+<style>
+:root{
+  --bg:#f6f7f5; --card:#ffffff; --ink:#1d2321; --ink2:#5d6b65; --ink3:#8a9691;
+  --line:#e2e7e4; --line2:#cdd6d1;
+  --accent:#2f6f57; --accent-w:#e8f1ec; --accent-d:#1f4d3c;
+  --warn:#a8522b; --warn-w:#fbeee7;
+  --bad:#a33a3a; --bad-w:#fbeaea;
+  --good:#2f6f57;
+  --field:#fffdf5; --shadow:0 1px 2px rgba(29,35,33,.06),0 4px 14px rgba(29,35,33,.05);
+  --btn-fg:#ffffff; --r:12px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --btn-fg:#10201a; color-scheme:dark;
+    --bg:#141816; --card:#1c2220; --ink:#e7ece9; --ink2:#a3b0ab; --ink3:#78857f;
+    --line:#2c3532; --line2:#3b4642;
+    --accent:#6dbd98; --accent-w:#1e2c26; --accent-d:#8fd4b3;
+    --warn:#d69264; --warn-w:#2e241c;
+    --bad:#e08585; --bad-w:#2f2020;
+    --good:#6dbd98;
+    --field:#232a27; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --btn-fg:#10201a; color-scheme:dark;
+  --bg:#141816; --card:#1c2220; --ink:#e7ece9; --ink2:#a3b0ab; --ink3:#78857f;
+  --line:#2c3532; --line2:#3b4642;
+  --accent:#6dbd98; --accent-w:#1e2c26; --accent-d:#8fd4b3;
+  --warn:#d69264; --warn-w:#2e241c;
+  --bad:#e08585; --bad-w:#2f2020;
+  --good:#6dbd98;
+  --field:#232a27; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:15px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px 96px}
+header.top{
+  position:sticky;top:0;z-index:30;background:var(--bg);
+  border-bottom:1px solid var(--line);padding-top:max(10px,env(safe-area-inset-top))
+}
+.brandrow{max-width:880px;margin:0 auto;padding:0 16px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand{font-size:17px;font-weight:700;letter-spacing:.2px}
+.sub{font-size:12px;color:var(--ink3)}
+.spacer{flex:1}
+.iconbtn{
+  border:1px solid var(--line2);background:var(--card);color:var(--ink2);
+  border-radius:8px;padding:4px 9px;font-size:12px;cursor:pointer;line-height:1.5
+}
+.iconbtn:hover{border-color:var(--accent);color:var(--accent)}
+nav.tabs{max-width:880px;margin:0 auto;padding:8px 16px 0;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{
+  flex:0 0 auto;border:0;background:none;color:var(--ink2);cursor:pointer;
+  font-size:14px;padding:8px 12px 10px;border-bottom:2px solid transparent;
+  font-family:inherit;white-space:nowrap
+}
+nav.tabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+h2.sec{font-size:16px;margin:26px 0 10px;font-weight:700}
+h2.sec:first-child{margin-top:20px}
+h3.sub3{font-size:14px;margin:18px 0 8px;font-weight:700;color:var(--ink)}
+p.hint{color:var(--ink2);font-size:13px;margin:6px 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow);margin:10px 0}
+.card.tight{padding:11px 13px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:640px){.grid2,.grid3{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}}
+label.f{display:block;font-size:12px;color:var(--ink2);margin:0 0 4px}
+input[type=text],input[type=number],input[type=date],select,textarea{
+  width:100%;font:inherit;font-size:14px;color:var(--ink);background:var(--field);
+  border:1px solid var(--line2);border-radius:8px;padding:8px 10px
+}
+textarea{line-height:1.7;resize:vertical;min-height:110px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-w);border-color:var(--accent)}
+button.btn{
+  font:inherit;font-size:14px;font-weight:600;cursor:pointer;border-radius:9px;
+  padding:9px 16px;border:1px solid var(--accent);background:var(--accent);color:var(--btn-fg)
+}
+button.btn:hover{background:var(--accent-d);border-color:var(--accent-d)}
+button.btn.ghost{background:var(--card);color:var(--ink2);border-color:var(--line2)}
+button.btn.ghost:hover{background:var(--card);color:var(--accent);border-color:var(--accent)}
+button.btn.sm{padding:5px 11px;font-size:13px;font-weight:500}
+button.btn.danger{background:var(--card);color:var(--bad);border-color:var(--bad)}
+button.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row.end{justify-content:flex-end}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--ink2);font-weight:600;font-size:12px}
+tr:last-child td{border-bottom:0}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:var(--accent-w);color:var(--accent-d);border:1px solid transparent;white-space:nowrap}
+:root[data-theme="dark"] .pill,:root:not([data-theme="light"]) .pill{color:var(--accent-d)}
+.pill.warn{background:var(--warn-w);color:var(--warn)}
+.pill.bad{background:var(--bad-w);color:var(--bad)}
+.pill.mute{background:transparent;color:var(--ink3);border-color:var(--line2)}
+.big{font-size:26px;font-weight:700;line-height:1.2}
+.mid{font-size:19px;font-weight:700;line-height:1.25}
+.lab{font-size:12px;color:var(--ink3);margin-top:2px}
+.empty{color:var(--ink3);font-size:13px;padding:14px 2px;text-align:center}
+.chk{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.chk:last-child{border-bottom:0}
+.chk input{margin:3px 0 0;width:17px;height:17px;flex:0 0 auto;accent-color:var(--accent)}
+.chk .t{font-size:14px}
+.chk .d{font-size:12.5px;color:var(--ink2);margin-top:1px}
+.chk.done .t{color:var(--ink3);text-decoration:line-through}
+.dictout{line-height:2.05;font-size:15px;word-break:break-word}
+.dictout .ok{color:var(--ink2)}
+.dictout .miss{background:var(--bad-w);color:var(--bad);border-radius:4px;padding:1px 3px;font-weight:600}
+.dictout .missf{background:var(--warn-w);color:var(--warn);border-radius:4px;padding:1px 3px}
+.dictout .ins{color:var(--ink3);text-decoration:line-through;opacity:.75}
+.wordchip{
+  display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--card);
+  border-radius:99px;padding:3px 6px 3px 11px;font-size:13px;margin:0 6px 6px 0
+}
+.wordchip button{border:0;background:var(--accent-w);color:var(--accent-d);border-radius:99px;width:20px;height:20px;cursor:pointer;font-size:14px;line-height:1;padding:0}
+.wordchip.added{opacity:.5}
+.wordchip.added button{background:transparent;color:var(--ink3);cursor:default}
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom));
+  background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:99px;font-size:13.5px;
+  z-index:200;box-shadow:0 6px 24px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .18s
+}
+.toast.on{opacity:1}
+.timer{font-variant-numeric:tabular-nums;font-size:42px;font-weight:700;letter-spacing:1px;line-height:1.1}
+.timer.run{color:var(--accent)}
+.timer.over{color:var(--bad)}
+svg .grid{stroke:var(--line);stroke-width:1}
+svg .axis{stroke:var(--line2);stroke-width:1}
+svg text{fill:var(--ink3);font-size:10px;font-family:inherit}
+svg .tline{stroke:var(--good);stroke-width:1.5;stroke-dasharray:5 4}
+dialog.sheet{
+  border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);
+  padding:0;max-width:620px;width:calc(100% - 28px);box-shadow:0 20px 60px rgba(0,0,0,.28)
+}
+dialog.sheet::backdrop{background:rgba(10,14,12,.45)}
+.sheet .hd{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.sheet .hd b{font-size:15px}
+.sheet .bd{padding:14px 16px;max-height:62vh;overflow:auto}
+.sheet .ft{padding:11px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+.essay{white-space:pre-wrap;font-size:14px;line-height:1.8}
+.bar{height:7px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:13.5px;border-bottom:1px dashed var(--line)}
+.kv:last-child{border-bottom:0}
+.kv b{font-weight:600}
+.qbox{background:var(--accent-w);border-radius:10px;padding:13px 15px;font-size:15px;line-height:1.7}
+.qbox .qp{font-size:11.5px;color:var(--ink3);margin-bottom:4px}
+.tagbtn{
+  border:1px solid var(--line2);background:var(--card);color:var(--ink2);border-radius:99px;
+  padding:5px 12px;font-size:13px;cursor:pointer;font-family:inherit
+}
+.tagbtn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-w);color:var(--accent-d);font-weight:600}
+.note{font-size:12.5px;color:var(--ink3);margin-top:8px}
+.warnbox{background:var(--warn-w);border:1px solid transparent;border-radius:9px;padding:9px 12px;font-size:12.5px;color:var(--warn);margin:10px 0}
+hr.d{border:0;border-top:1px solid var(--line);margin:16px 0}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brandrow">
+    <span class="brand">雅思每日练习台</span>
+    <span class="sub" id="hdWeek">—</span>
+    <span class="spacer"></span>
+    <button class="iconbtn" id="btnTheme" title="切换深浅色">配色</button>
+    <button class="iconbtn" id="btnData">数据</button>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="today" aria-selected="true">今日</button>
+    <button role="tab" data-tab="dict" aria-selected="false">精听</button>
+    <button role="tab" data-tab="words" aria-selected="false">生词本</button>
+    <button role="tab" data-tab="score" aria-selected="false">成绩</button>
+    <button role="tab" data-tab="speak" aria-selected="false">口语</button>
+    <button role="tab" data-tab="write" aria-selected="false">写作</button>
+  </nav>
+</header>
+
+<div class="wrap">
+
+<!-- ================= 今日 ================= -->
+<section id="tab-today">
+  <div class="card">
+    <div class="row" style="align-items:flex-start">
+      <div style="flex:1;min-width:150px">
+        <div class="big" id="tdDate">—</div>
+        <div class="lab" id="tdMeta">—</div>
+      </div>
+      <div style="text-align:right">
+        <div class="mid" id="tdStreak">0 天</div>
+        <div class="lab">连续打卡</div>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <div class="row" style="justify-content:space-between;font-size:12px;color:var(--ink2)">
+        <span id="tdProgLab">今天完成 0 / 0</span><span id="tdWeekLab">本周 0 / 0</span>
+      </div>
+      <div class="bar" style="margin-top:5px"><i id="tdProg" style="width:0%"></i></div>
+    </div>
+  </div>
+
+  <h2 class="sec">今天该做什么</h2>
+  <p class="hint">和你 Excel 打卡表用的是同一套安排。勾上就算今天这项做完了。</p>
+  <div class="card" id="tdTasks"></div>
+
+  <h2 class="sec">最近怎么样</h2>
+  <div class="grid3">
+    <div class="card tight"><div class="mid" id="stListen">—</div><div class="lab">最近一次听力</div></div>
+    <div class="card tight"><div class="mid" id="stRead">—</div><div class="lab">最近一次阅读</div></div>
+    <div class="card tight"><div class="mid" id="stDue">—</div><div class="lab">今天该复习的词</div></div>
+  </div>
+  <div class="card">
+    <h3 class="sub3" style="margin-top:0">本周错因分布</h3>
+    <div id="tdCause"></div>
+  </div>
+
+  <h2 class="sec">设置</h2>
+  <div class="card">
+    <div class="grid3">
+      <div><label class="f" for="setStart">计划开始日期（周一）</label><input type="date" id="setStart"></div>
+      <div><label class="f" for="setTarget">总分目标</label><input type="number" id="setTarget" step="0.5" min="4" max="9"></div>
+      <div><label class="f" for="setEach">单项目标</label><input type="number" id="setEach" step="0.5" min="4" max="9"></div>
+    </div>
+    <div class="note">改开始日期会重算"第几周 / 第几天"，已经记录的练习不受影响。</div>
+  </div>
+</section>
+
+<!-- ================= 精听 ================= -->
+<section id="tab-dict" hidden>
+  <h2 class="sec">精听对照</h2>
+  <p class="hint">先把一段音频逐句听写下来，再把原文贴进来对照。<strong>红色是漏掉/听错的实词</strong>（这些才值得背），橙色是虚词（多半是连读吞音）。</p>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <label class="f" for="dictRef">原文（听完再贴）</label>
+        <textarea id="dictRef" placeholder="例：The library opens at nine thirty on weekdays and closes at six."></textarea>
+      </div>
+      <div>
+        <label class="f" for="dictMine">你听写的</label>
+        <textarea id="dictMine" placeholder="例：The library opens at nine thirty on weekday and close at six."></textarea>
+      </div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <input type="text" id="dictSrc" placeholder="材料来源，例：剑16 Test2 S1" style="flex:1;min-width:160px">
+      <button class="btn" id="btnDiff">对照</button>
+      <button class="btn ghost" id="btnDictClear">清空</button>
+    </div>
+  </div>
+
+  <div id="dictResult" hidden>
+    <div class="card">
+      <h3 class="sub3" style="margin-top:0">对照结果</h3>
+      <div class="row" style="margin-bottom:10px">
+        <span class="pill" id="dAcc">—</span>
+        <span class="pill bad" id="dContent">—</span>
+        <span class="pill warn" id="dFunc">—</span>
+      </div>
+      <div class="dictout" id="dOut"></div>
+    </div>
+
+    <div class="card" id="dMissCard">
+      <h3 class="sub3" style="margin-top:0">漏掉的实词 —— 点 + 加进生词本</h3>
+      <div id="dMiss"></div>
+    </div>
+
+    <div class="card">
+      <h3 class="sub3" style="margin-top:0">这次主要是哪种错？</h3>
+      <p class="hint" style="margin-top:0">填个数就行，估计的也可以。四类的比例变化比绝对数字有用。</p>
+      <div class="grid4">
+        <div><label class="f" for="cz1">连读没断开</label><input type="number" id="cz1" min="0" value="0"></div>
+        <div><label class="f" for="cz2">单词不认识</label><input type="number" id="cz2" min="0" value="0"></div>
+        <div><label class="f" for="cz3">句子结构没跟上</label><input type="number" id="cz3" min="0" value="0"></div>
+        <div><label class="f" for="cz4">走神漏了</label><input type="number" id="cz4" min="0" value="0"></div>
+      </div>
+      <div style="margin-top:10px"><label class="f" for="dictNote">一句话备注（可不填）</label><input type="text" id="dictNote" placeholder="例：数字和地名还是听不准"></div>
+      <div class="row end" style="margin-top:10px"><button class="btn" id="btnDictSave">保存这次记录</button></div>
+    </div>
+  </div>
+
+  <h2 class="sec">按周看错因</h2>
+  <p class="hint">每根柱子是一周。柱子整体变矮 = 听得准了；某一色变矮 = 那一类练出来了。</p>
+  <div class="card"><div id="causeChart"></div></div>
+
+  <h2 class="sec">历史记录</h2>
+  <div class="card"><div class="tblwrap"><table id="dictTable"></table></div></div>
+</section>
+
+<!-- ================= 生词本 ================= -->
+<section id="tab-words" hidden>
+  <h2 class="sec">生词本</h2>
+  <p class="hint">按间隔复习：记住的往后推（1 → 2 → 4 → 7 → 15 → 30 天），没记住的退回第一天、<strong>并在本轮末尾再考一次</strong>。</p>
+  <div class="card">
+    <div class="row">
+      <input type="text" id="wNew" placeholder="单词或词组" style="flex:1;min-width:130px">
+      <input type="text" id="wMean" placeholder="中文意思（可不填）" style="flex:1.2;min-width:130px">
+      <button class="btn" id="btnAddWord">加入</button>
+    </div>
+  </div>
+
+  <div class="grid4">
+    <div class="card tight"><div class="mid" id="wTotal">0</div><div class="lab">总词数</div></div>
+    <div class="card tight"><div class="mid" id="wDue">0</div><div class="lab">今天要复习</div></div>
+    <div class="card tight"><div class="mid" id="wYoung">0</div><div class="lab">还没记牢</div></div>
+    <div class="card tight"><div class="mid" id="wMature">0</div><div class="lab">进入长间隔</div></div>
+  </div>
+
+  <div class="card" id="revStart">
+    <div class="row">
+      <div style="flex:1;min-width:150px">
+        <b id="revCount">今天没有要复习的词</b>
+        <div class="note" style="margin-top:2px">复习方式：</div>
+      </div>
+      <select id="revMode" style="width:auto;min-width:140px">
+        <option value="en2cn">看英文，想意思</option>
+        <option value="listen">听发音，拼出来</option>
+      </select>
+      <button class="btn" id="btnRev">开始复习</button>
+    </div>
+    <div class="note" id="ttsNote" hidden>这台设备的浏览器没有英式发音，听音拼写会用默认英语发音。</div>
+  </div>
+
+  <div class="card" id="revBox" hidden>
+    <div class="row" style="justify-content:space-between;margin-bottom:12px">
+      <span class="pill mute" id="revProg">—</span>
+      <button class="btn ghost sm" id="btnRevQuit">退出复习</button>
+    </div>
+    <div style="text-align:center;padding:14px 0">
+      <div class="big" id="revFront">—</div>
+      <div class="lab" id="revHintLine" style="margin-top:8px">—</div>
+    </div>
+    <div id="revListenIn" hidden>
+      <div class="row">
+        <button class="btn ghost" id="btnSay">🔊 再放一次</button>
+        <input type="text" id="revTyped" placeholder="把听到的词拼出来" style="flex:1;min-width:140px" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button class="btn" id="btnCheckSpell">对答案</button>
+      </div>
+    </div>
+    <div id="revShowBtn" class="row end"><button class="btn" id="btnReveal">看答案</button></div>
+    <div id="revBack" hidden>
+      <hr class="d">
+      <div style="text-align:center">
+        <div class="mid" id="revAnswer">—</div>
+        <div class="note" id="revSrc">—</div>
+      </div>
+      <div class="row" style="justify-content:center;margin-top:14px">
+        <button class="btn ghost danger" id="btnBad">没记住</button>
+        <button class="btn" id="btnGood">记住了</button>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="sec">全部词</h2>
+  <div class="card">
+    <div class="row" style="margin-bottom:8px">
+      <input type="text" id="wFilter" placeholder="搜索" style="flex:1;min-width:120px">
+      <select id="wSort" style="width:auto"><option value="due">按复习日期</option><option value="new">按加入时间</option><option value="lapse">按错的次数</option></select>
+    </div>
+    <div class="tblwrap"><table id="wordTable"></table></div>
+  </div>
+</section>
+
+<!-- ================= 成绩 ================= -->
+<section id="tab-score" hidden>
+  <h2 class="sec">记一次成绩</h2>
+  <p class="hint">做完一套听力或学术类阅读，填答对题数就行，分数自动换算。</p>
+  <div class="card">
+    <div class="grid4">
+      <div><label class="f" for="scKind">科目</label><select id="scKind"><option value="listening">听力</option><option value="reading">阅读</option></select></div>
+      <div><label class="f" for="scRaw">答对题数</label><input type="number" id="scRaw" min="0" max="40" placeholder="0–40"></div>
+      <div><label class="f" for="scDate">日期</label><input type="date" id="scDate"></div>
+      <div><label class="f" for="scBook">套题</label><input type="text" id="scBook" placeholder="剑16 T2"></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <span class="pill" id="scPreview">换算分数：—</span>
+      <span class="spacer"></span>
+      <button class="btn" id="btnScSave">保存</button>
+    </div>
+  </div>
+
+  <h2 class="sec">分数走势</h2>
+  <div class="card">
+    <div class="row" style="margin-bottom:6px">
+      <span class="pill mute">🟩 听力</span><span class="pill mute">🟦 阅读</span>
+      <span class="pill mute">虚线 = 目标线</span>
+    </div>
+    <div id="scoreChart"></div>
+  </div>
+
+  <h2 class="sec">整套模考四项</h2>
+  <p class="hint">四项都填才算总分，进位按雅思规则（.25 进 .5，.75 进下一个整分）。</p>
+  <div class="card">
+    <div class="grid4">
+      <div><label class="f" for="bL">听力</label><input type="number" id="bL" step="0.5" min="0" max="9"></div>
+      <div><label class="f" for="bR">阅读</label><input type="number" id="bR" step="0.5" min="0" max="9"></div>
+      <div><label class="f" for="bW">写作</label><input type="number" id="bW" step="0.5" min="0" max="9"></div>
+      <div><label class="f" for="bS">口语</label><input type="number" id="bS" step="0.5" min="0" max="9"></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <span class="pill" id="bPreview">总分：—</span>
+      <span class="spacer"></span>
+      <button class="btn" id="btnBandSave">保存</button>
+    </div>
+  </div>
+  <div class="card"><div class="tblwrap"><table id="bandTable"></table></div></div>
+
+  <h2 class="sec">单项记录</h2>
+  <div class="card"><div class="tblwrap"><table id="scoreTable"></table></div></div>
+
+  <h2 class="sec">题数对照表</h2>
+  <p class="hint">下面是常见的对照区间（剑桥真题册里印的那种），实际考试每场略有浮动，只当参考。</p>
+  <div class="grid2">
+    <div class="card"><h3 class="sub3" style="margin-top:0">听力</h3><div class="tblwrap"><table id="tabL"></table></div></div>
+    <div class="card"><h3 class="sub3" style="margin-top:0">学术类阅读</h3><div class="tblwrap"><table id="tabR"></table></div></div>
+  </div>
+</section>
+
+<!-- ================= 口语 ================= -->
+<section id="tab-speak" hidden>
+  <h2 class="sec">口语练习</h2>
+  <p class="hint">Part 2 的规矩：1 分钟准备，讲满 2 分钟。录下来，过两周再回听 —— 你会听见自己进步在哪。</p>
+  <div class="card">
+    <div class="row">
+      <select id="spPart" style="width:auto"><option value="1">Part 1</option><option value="2">Part 2</option><option value="3">Part 3</option></select>
+      <button class="btn ghost" id="btnNewQ">换一题</button>
+      <span class="spacer"></span>
+      <label class="row" style="gap:5px;font-size:13px;color:var(--ink2);cursor:pointer"><input type="checkbox" id="spRec" style="width:16px;height:16px;accent-color:var(--accent)">录音</label>
+    </div>
+    <div class="qbox" style="margin-top:11px">
+      <div class="qp" id="spQPart">Part 1</div>
+      <div id="spQ">点"换一题"开始</div>
+    </div>
+  </div>
+
+  <div class="card" style="text-align:center">
+    <div class="timer" id="spTimer">0:00</div>
+    <div class="lab" id="spPhase">还没开始</div>
+    <div class="row" style="justify-content:center;margin-top:12px">
+      <button class="btn" id="btnSpStart">开始</button>
+      <button class="btn ghost" id="btnSpStop" disabled>结束</button>
+    </div>
+    <div class="note" id="spRecNote" hidden>录音会存在这台设备的浏览器里，导出 JSON 不包含音频。</div>
+  </div>
+
+  <div class="card" id="spSave" hidden>
+    <h3 class="sub3" style="margin-top:0">刚才那次，自己觉得怎么样？</h3>
+    <div class="row" id="spTags"></div>
+    <div style="margin-top:10px"><label class="f" for="spNote">备注</label><input type="text" id="spNote" placeholder="例：中间卡了两次，想不起 commute"></div>
+    <div class="row end" style="margin-top:10px">
+      <button class="btn ghost" id="btnSpDrop">不保存</button>
+      <button class="btn" id="btnSpSave">保存</button>
+    </div>
+  </div>
+
+  <h2 class="sec">练过的题</h2>
+  <div class="card"><div class="tblwrap"><table id="spTable"></table></div></div>
+</section>
+
+<!-- ================= 写作 ================= -->
+<section id="tab-write" hidden>
+  <h2 class="sec">限时写作</h2>
+  <p class="hint">机考是打字，所以这里也打字。Task 1 用 20 分钟 150 词，Task 2 用 40 分钟 250 词。</p>
+  <div class="card">
+    <div class="row">
+      <select id="wrTask" style="width:auto"><option value="2">Task 2（40 分钟）</option><option value="1">Task 1（20 分钟）</option></select>
+      <button class="btn ghost" id="btnWrQ">换题</button>
+      <span class="spacer"></span>
+      <span class="pill mute" id="wrCount">0 词</span>
+      <span class="pill mute" id="wrTimer">00:00</span>
+    </div>
+    <div class="qbox" style="margin-top:11px"><div id="wrQ">点"换题"开始</div></div>
+    <textarea id="wrText" style="min-height:280px;margin-top:11px" placeholder="在这里写。开始计时后字数会实时统计。"></textarea>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="btnWrStart">开始计时</button>
+      <button class="btn ghost" id="btnWrDone" disabled>写完了</button>
+      <span class="spacer"></span>
+      <span class="note" id="wrTip">建议：Task 2 前 5 分钟只列提纲。</span>
+    </div>
+  </div>
+
+  <div class="card" id="wrSelf" hidden>
+    <h3 class="sub3" style="margin-top:0">按四项标准给自己打个分</h3>
+    <p class="hint" style="margin-top:0">凭感觉估，估完存下来。等我给你批改时，可以对一下差在哪。</p>
+    <div class="grid4">
+      <div><label class="f" for="sfTa">任务回应 TA</label><select id="sfTa"></select></div>
+      <div><label class="f" for="sfCc">连贯衔接 CC</label><select id="sfCc"></select></div>
+      <div><label class="f" for="sfLr">词汇 LR</label><select id="sfLr"></select></div>
+      <div><label class="f" for="sfGra">语法 GRA</label><select id="sfGra"></select></div>
+    </div>
+    <div class="row end" style="margin-top:10px">
+      <button class="btn ghost" id="btnWrDrop">不保存</button>
+      <button class="btn" id="btnWrSave">保存这篇</button>
+    </div>
+  </div>
+
+  <h2 class="sec">写过的作文</h2>
+  <div class="card"><div class="tblwrap"><table id="wrTable"></table></div></div>
+</section>
+
+</div><!-- /wrap -->
+
+<dialog class="sheet" id="dlg">
+  <div class="hd"><b id="dlgTitle">—</b><span class="spacer"></span><button class="iconbtn" id="dlgX">✕</button></div>
+  <div class="bd" id="dlgBody"></div>
+  <div class="ft" id="dlgFoot"></div>
+</dialog>
+
+<div class="toast" id="toast"></div>
+<script>
+"use strict";
+/* ============================ 存储 ============================ */
+const KEY = "ielts_lab_v2";
+let memoryOnly = false;
+const DEFAULT_STATE = {
+  v: 2,
+  settings: { startDate: "2026-09-21", target: 7, each: 6.5, theme: "" },
+  daily: {}, dictation: [], words: [], scores: [], bands: [], speaking: [], writing: []
+};
+function loadState() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return structuredClone(DEFAULT_STATE);
+    const o = JSON.parse(raw);
+    return normalize(o);
+  } catch (e) { memoryOnly = true; return structuredClone(DEFAULT_STATE); }
+}
+function normalize(o) {
+  const d = structuredClone(DEFAULT_STATE);
+  if (!o || typeof o !== "object") return d;
+  d.settings = Object.assign(d.settings, o.settings || {});
+  for (const k of ["dictation", "words", "scores", "bands", "speaking", "writing"])
+    if (Array.isArray(o[k])) d[k] = o[k];
+  if (o.daily && typeof o.daily === "object") d.daily = o.daily;
+  return d;
+}
+let S = loadState();
+// 同步写盘：点一下就落地，关页面/断电都不会丢最后一条
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); }
+  catch (e) {
+    if (!memoryOnly) { memoryOnly = true; toast("存不进浏览器了，记得用『数据』导出备份"); }
+  }
+}
+addEventListener("pagehide", save);
+addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") save(); });
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+/* ============================ 录音：IndexedDB ============================ */
+const AUDIO_DB = "ielts_lab_audio";
+let idbOK = true;
+function idb() {
+  return new Promise((res, rej) => {
+    if (!window.indexedDB) { idbOK = false; return rej(new Error("no idb")); }
+    const r = indexedDB.open(AUDIO_DB, 1);
+    r.onupgradeneeded = () => { if (!r.result.objectStoreNames.contains("clips")) r.result.createObjectStore("clips"); };
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => { idbOK = false; rej(r.error); };
+  });
+}
+async function audioPut(id, blob) { const db = await idb(); return new Promise((res, rej) => { const t = db.transaction("clips", "readwrite"); t.objectStore("clips").put(blob, id); t.oncomplete = res; t.onerror = () => rej(t.error); }); }
+async function audioGet(id) { const db = await idb(); return new Promise((res, rej) => { const t = db.transaction("clips", "readonly"); const q = t.objectStore("clips").get(id); q.onsuccess = () => res(q.result || null); q.onerror = () => rej(q.error); }); }
+async function audioDel(id) { try { const db = await idb(); const t = db.transaction("clips", "readwrite"); t.objectStore("clips").delete(id); } catch (e) { } }
+
+/* ============================ 日期 ============================ */
+const DAYMS = 86400000;
+const WD = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+function ymd(d) { const p = n => String(n).padStart(2, "0"); return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()); }
+function parseYmd(s) { const [y, m, d] = String(s).split("-").map(Number); return new Date(y, (m || 1) - 1, d || 1); }
+function today() { const d = new Date(); d.setHours(0, 0, 0, 0); return d; }
+function wdIdx(d) { return (d.getDay() + 6) % 7; }              // 周一=0
+function mondayOf(d) { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - wdIdx(x)); return x; }
+// 按周归桶：一律折算到"那一周的周一"再比较。
+// 直接拿当天日期跟周一比，只有周一的记录能对上，其余六天会全部落空。
+function weekKey(d) { return ymd(mondayOf(d)); }
+function daysBetween(a, b) { return Math.round((mondayOf(b) - mondayOf(a)) / DAYMS); }
+function weekNoOf(d) {
+  const st = parseYmd(S.settings.startDate);
+  const n = Math.floor(daysBetween(st, d) / 7) + 1;
+  return n;
+}
+function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function fmtCn(d) { return (d.getMonth() + 1) + "月" + d.getDate() + "日 " + WD[wdIdx(d)]; }
+
+/* ============================ 计划：和 Excel 同一套 ============================ */
+const PHASES = [
+  ["打底", 1, 8], ["铺开", 9, 20], ["强化", 21, 44], ["冲刺", 45, 52]
+];
+const MODULES = [
+  ["M1", 1, 2, "登录服务器与 Linux 基本功"], ["M2", 3, 4, "文本处理与三种文件格式"],
+  ["M3", 5, 6, "conda 环境与第一个脚本"], ["M4", 7, 9, "质控与比对"],
+  ["M5", 10, 11, "定量：从 BAM 到计数矩阵"], ["M6", 12, 14, "R 入门"],
+  ["M7", 15, 17, "差异表达（DESeq2）"], ["M8", 18, 20, "功能注释与富集"],
+  ["M9", 21, 52, "写成自己的流程，按需进阶"]
+];
+const TUTORIAL_DAYS = {
+  M1: { 1: "连上服务器", 2: "我在哪、这里有什么", 3: "cd 和路径", 4: "建、复制、移动、删除", 5: "看文件内容", 6: "上机练习：找到你的数据", 8: "看帮助", 9: "服务器有多忙", 10: "历史命令和小技巧", 11: "复习", 12: "自测", 13: "过关，把目录结构发给 Claude" },
+  M2: { 1: "管道和重定向", 2: "变量和 env.sh", 3: "fastq 格式", 4: "数 reads", 5: "fasta 格式", 6: "grep、cut、sort、uniq + 练习", 8: "GFF3 注释", 9: "awk 入门", 10: "上机练习 1–2", 11: "上机练习 3–4", 12: "复习和自测", 13: "过关" },
+  M3: { 1: "conda 是什么", 2: "建学习用的环境", 3: "seqkit 和抽样", 4: "变量、引号和循环", 5: "第一个脚本", 6: "后台运行 + 看质控报告", 8: "跑全量数据：启动", 9: "跑全量数据：看进度", 10: "对比 6 份质控报告", 11: "复习", 12: "自测", 13: "过关" }
+};
+const phaseOf = w => PHASES.find(p => w >= p[1] && w <= p[2]) || PHASES[3];
+const moduleOf = w => MODULES.find(m => w >= m[1] && w <= m[2]) || MODULES[8];
+function bioText(w, wd) {
+  const M = moduleOf(w);
+  if (TUTORIAL_DAYS[M[0]]) {
+    const n = (w - M[1]) * 7 + wd + 1;
+    const t = TUTORIAL_DAYS[M[0]][n];
+    if (t) return "教程（一）" + M[0] + " 第 " + n + " 天：" + t;
+  }
+  if (wd === 5) return M[0] + " " + M[3] + "：上机练习 + 过关自测";
+  return M[0] + " " + M[3] + "：先看计划第六节";
+}
+function itemsFor(w, wd) {
+  const P = phaseOf(w)[0], early = w <= 20, out = [];
+  if (wd <= 4) {
+    let ie;
+    if (P === "打底") ie = [30, "精听", "剑雅 Section 1–2 逐句听写 + 跟读，最后录 1 分钟复述"];
+    else if (P === "铺开") ie = [
+      [30, "精听", "Section 3–4 逐句听写 + 跟读"],
+      [30, "阅读", "限时 20′ 做一篇 + 10′ 整理同义替换"],
+      [30, "精听", "Section 3–4 逐句听写 + 跟读"],
+      [30, "口语 Part 2", "准备 1 题 + 录音 2 分钟 + 回听后改一处再录"],
+      [30, "精听", "Section 3–4 逐句听写 + 跟读"]][wd];
+    else if (P === "强化") ie = [
+      [60, "听力整套", "限时做一套 + 错题精听"],
+      [60, "阅读整套", "限时 60′，错题留到周五复盘"],
+      [60, "写作 Task 2", "电脑上打字 40′ + 对照修改 20′"],
+      [60, "口语 + 精听", "Part 2/3 录音 3 题 + 精听 20′"],
+      [60, "Task 1 + 精听", "Task 1 打字 20′ + 精听 20′ + 本周错题复盘 20′"]][wd];
+    else ie = [
+      [60, "听力整套", "新剑雅，按机考时间做 + 复盘"],
+      [60, "阅读整套", "新剑雅，按机考时间做 + 复盘"],
+      [60, "写作", "一篇作文，打字限时"],
+      [60, "口语 + 听力", "口语 15′ + 听力错题 45′"],
+      [60, "写作", "一篇作文，打字限时"]][wd];
+    out.push(ie);
+    if (early) out.push([30, "生信", bioText(w, wd)]);
+  } else if (wd === 5) {
+    out.push({ "打底": [45, "阅读入门", "认识题型 + 精读一篇"], "铺开": [45, "写作或阅读", "隔周交替：Task 2 打字一篇，或阅读整套"], "强化": [75, "模考或写作", "隔周交替：听读整套模考，或写两篇作文"], "冲刺": [75, "全真模考", "新剑雅一整套，按机考时间做"] }[P]);
+    out.push(early ? [60, "生信上机", bioText(w, wd)] : [30, "生信", "跑本周新数据，或改进自己的流程脚本"]);
+  } else {
+    const d = { "打底": "统计本周错因 + 口语 Part 1 录音", "铺开": "统计本周错因 + 口语 Part 3 录音" }[P] || "错题复盘 + 口语模考录音";
+    out.push([40, "复盘 + 口语", d]);
+  }
+  return out;
+}
+
+/* ============================ 分数换算 ============================ */
+const L_TAB = [[39, 9], [37, 8.5], [35, 8], [32, 7.5], [30, 7], [26, 6.5], [23, 6], [18, 5.5], [16, 5], [13, 4.5], [10, 4], [8, 3.5], [6, 3], [4, 2.5]];
+const R_TAB = [[39, 9], [37, 8.5], [35, 8], [33, 7.5], [30, 7], [27, 6.5], [23, 6], [19, 5.5], [15, 5], [13, 4.5], [10, 4], [8, 3.5], [6, 3], [4, 2.5]];
+function bandOf(kind, raw) {
+  const t = kind === "reading" ? R_TAB : L_TAB;
+  if (raw === "" || raw === null || raw === undefined) return null;
+  const n = Number(raw);
+  if (!isFinite(n) || n < 0) return null;
+  for (const [min, b] of t) if (n >= min) return b;
+  return 2;
+}
+function overallOf(l, r, w, s) {
+  const a = [l, r, w, s].map(Number);
+  if (a.some(x => !isFinite(x) || x <= 0)) return null;
+  return Math.round((a.reduce((p, c) => p + c, 0) / 4) * 2) / 2;
+}
+function rangesOf(tab) {                       // 把阈值表摊成"x–y 题 → 分数"
+  const out = [];
+  for (let i = 0; i < tab.length; i++) {
+    const lo = tab[i][0], hi = i === 0 ? 40 : tab[i - 1][0] - 1;
+    out.push([lo, hi, tab[i][1]]);
+  }
+  return out;
+}
+
+/* ============================ 小工具 ============================ */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+function el(tag, attrs, kids) {
+  const n = document.createElement(tag);
+  if (attrs) for (const k in attrs) {
+    if (k === "class") n.className = attrs[k];
+    else if (k === "text") n.textContent = attrs[k];
+    else if (k === "html") n.innerHTML = attrs[k];
+    else if (k.startsWith("on")) n.addEventListener(k.slice(2), attrs[k]);
+    else if (attrs[k] !== null && attrs[k] !== undefined && attrs[k] !== false) n.setAttribute(k, attrs[k]);
+  }
+  if (kids) (Array.isArray(kids) ? kids : [kids]).forEach(c => c && n.appendChild(typeof c === "string" ? document.createTextNode(c) : c));
+  return n;
+}
+function table(head, rows, emptyMsg) {
+  const f = document.createDocumentFragment();
+  if (!rows.length) { const t = el("tbody"); t.appendChild(el("tr", null, el("td", { colspan: head.length, class: "empty", text: emptyMsg || "还没有记录" }))); f.appendChild(t); return f; }
+  const th = el("thead"), tr = el("tr");
+  head.forEach(h => tr.appendChild(el("th", { text: h })));
+  th.appendChild(tr); f.appendChild(th);
+  const tb = el("tbody");
+  rows.forEach(r => {
+    const t = el("tr");
+    r.forEach(c => t.appendChild(c instanceof Node ? el("td", null, c) : el("td", { text: c === null || c === undefined ? "" : String(c) })));
+    tb.appendChild(t);
+  });
+  f.appendChild(tb); return f;
+}
+let toastT = null;
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2100);
+}
+function sheet(title, bodyNode, footNodes) {
+  $("#dlgTitle").textContent = title;
+  const b = $("#dlgBody"); b.innerHTML = ""; b.appendChild(bodyNode);
+  const f = $("#dlgFoot"); f.innerHTML = "";
+  (footNodes || [el("button", { class: "btn ghost", text: "关闭", onclick: () => $("#dlg").close() })]).forEach(n => f.appendChild(n));
+  $("#dlg").showModal();
+}
+function confirmSheet(title, msg, okText, onOk) {
+  sheet(title, el("p", { text: msg, style: "margin:0;font-size:14px;line-height:1.7" }), [
+    el("button", { class: "btn ghost", text: "取消", onclick: () => $("#dlg").close() }),
+    el("button", { class: "btn danger", text: okText, onclick: () => { $("#dlg").close(); onOk(); } })
+  ]);
+}
+function mmss(sec) { const m = Math.floor(Math.abs(sec) / 60), s = Math.abs(sec) % 60; return (sec < 0 ? "-" : "") + m + ":" + String(s).padStart(2, "0"); }
+
+/* ============================ 图表 ============================ */
+function svgNode(w, h) { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg"); s.setAttribute("viewBox", "0 0 " + w + " " + h); s.setAttribute("width", "100%"); s.style.display = "block"; s.style.height = "auto"; return s; }
+function sv(tag, attrs) { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; }
+function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#888"; }
+</script>
+<script>
+"use strict";
+/* ======================= 今日 ======================= */
+const CAUSE_KEYS = ["liaison", "vocab", "grammar", "drift"];
+const CAUSE_LAB = { liaison: "连读没断开", vocab: "单词不认识", grammar: "句子结构没跟上", drift: "走神漏了" };
+const CAUSE_COLOR = { liaison: "#c9873f", vocab: "#a33a3a", grammar: "#4a7ba8", drift: "#7a8781" };
+
+function dayRec(k) { if (!S.daily[k]) S.daily[k] = { done: [] }; if (!Array.isArray(S.daily[k].done)) S.daily[k].done = []; return S.daily[k]; }
+
+function renderToday() {
+  const d = today(), k = ymd(d), w = weekNoOf(d), wd = wdIdx(d);
+  const started = d >= parseYmd(S.settings.startDate);
+  $("#tdDate").textContent = fmtCn(d);
+  const P = phaseOf(w), M = moduleOf(w);
+  $("#tdMeta").textContent = !started ? "计划还没开始 —— 先把教程（一）M1 第 1–4 天看掉"
+    : (w > 52 ? "第 " + w + " 周 · 计划已跑完一轮" : "第 " + w + " 周 · " + P[0] + "阶段 · 生信 " + M[0] + " " + M[3]);
+  $("#hdWeek").textContent = started && w <= 52 ? "第 " + w + " 周 · " + WD[wd] : fmtCn(d);
+
+  const items = started && w <= 52 ? itemsFor(w, wd) : [[30, "自选", "计划区间外：挑一项薄弱的练"]];
+  const rec = dayRec(k);
+  const box = $("#tdTasks"); box.innerHTML = "";
+  items.forEach((it, i) => {
+    const done = rec.done.includes(i);
+    const cb = el("input", { type: "checkbox", ...(done ? { checked: "checked" } : {}) });
+    const lab = el("label", { class: "chk" + (done ? " done" : "") }, [
+      cb,
+      el("div", { style: "flex:1" }, [
+        el("div", { class: "t" }, [el("b", { text: it[1] }), " · " + it[0] + " 分钟"]),
+        el("div", { class: "d", text: it[2] })
+      ])
+    ]);
+    cb.addEventListener("change", () => {
+      const r = dayRec(k);
+      r.done = cb.checked ? Array.from(new Set(r.done.concat(i))) : r.done.filter(x => x !== i);
+      save(); renderToday();
+    });
+    box.appendChild(lab);
+  });
+
+  const total = items.length, done = rec.done.filter(i => i < total).length;
+  $("#tdProgLab").textContent = "今天完成 " + done + " / " + total;
+  $("#tdProg").style.width = (total ? done / total * 100 : 0) + "%";
+
+  const mon = mondayOf(d);
+  let wDone = 0, wTot = 0;
+  for (let i = 0; i <= wd; i++) {
+    const dd = addDays(mon, i), kk = ymd(dd);
+    const n = (started && weekNoOf(dd) <= 52) ? itemsFor(weekNoOf(dd), i).length : 0;
+    wTot += n;
+    wDone += ((S.daily[kk] && S.daily[kk].done) || []).filter(x => x < n).length;
+  }
+  $("#tdWeekLab").textContent = "本周 " + wDone + " / " + wTot;
+
+  let streak = 0;
+  for (let i = 0; i < 400; i++) {
+    const dd = addDays(d, -i), kk = ymd(dd), r = S.daily[kk];
+    if (r && r.done && r.done.length) streak++;
+    else if (i > 0) break;
+  }
+  $("#tdStreak").textContent = streak + " 天";
+
+  const lastL = S.scores.filter(s => s.kind === "listening").slice(-1)[0];
+  const lastR = S.scores.filter(s => s.kind === "reading").slice(-1)[0];
+  $("#stListen").textContent = lastL ? lastL.raw + " 题 · " + lastL.band : "—";
+  $("#stRead").textContent = lastR ? lastR.raw + " 题 · " + lastR.band : "—";
+  $("#stDue").textContent = dueWords().length + " 个";
+
+  renderCauseSummary();
+}
+
+function renderCauseSummary() {
+  const wk = weekKey(today());
+  const mine = S.dictation.filter(r => weekKey(new Date(r.ts)) === wk);
+  const box = $("#tdCause"); box.innerHTML = "";
+  if (!mine.length) { box.appendChild(el("div", { class: "empty", text: "这周还没有精听记录" })); return; }
+  const sum = {}; let tot = 0;
+  CAUSE_KEYS.forEach(c => { sum[c] = mine.reduce((p, r) => p + (Number(r.causes && r.causes[c]) || 0), 0); tot += sum[c]; });
+  if (!tot) { box.appendChild(el("div", { class: "empty", text: "这周记了 " + mine.length + " 次精听，但没填错因" })); return; }
+  CAUSE_KEYS.forEach(c => {
+    box.appendChild(el("div", { class: "kv" }, [
+      el("span", { text: CAUSE_LAB[c] }),
+      el("b", { text: sum[c] + " 处（" + Math.round(sum[c] / tot * 100) + "%）" })
+    ]));
+  });
+}
+
+/* ======================= 精听 ======================= */
+const FUNCTION_WORDS = new Set(("a an the and or but so if then than that this these those of in on at to for from by with " +
+  "about into over under after before during between through as is are was were be been being am do does did doing have has had " +
+  "having will would shall should can could may might must not no nor i you he she it we they me him her us them my your his its " +
+  "our their there here when where while which who whom whose what how why all any some each every both few more most other such " +
+  "only own same too very just also up down out off again further once because until against above below").split(" "));
+const norm = s => s.toLowerCase().replace(/[^a-z0-9''-]/g, "").replace(/^[-']+|[-']+$/g, "");
+function tokenize(t) {
+  return String(t).split(/\s+/).filter(Boolean).map(raw => ({ raw, n: norm(raw) })).filter(x => x.n);
+}
+function diffTokens(ref, mine) {                    // LCS + 回溯
+  const a = ref, b = mine, n = a.length, m = b.length;
+  const dp = Array.from({ length: n + 1 }, () => new Uint32Array(m + 1));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--)
+    dp[i][j] = a[i].n === b[j].n ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  const ops = []; let i = 0, j = 0;
+  while (i < n && j < m) {
+    if (a[i].n === b[j].n) { ops.push(["eq", a[i]]); i++; j++; }
+    else if (dp[i + 1][j] >= dp[i][j + 1]) { ops.push(["del", a[i]]); i++; }
+    else { ops.push(["ins", b[j]]); j++; }
+  }
+  while (i < n) ops.push(["del", a[i++]]);
+  while (j < m) ops.push(["ins", b[j++]]);
+  return ops;
+}
+let lastDiff = null;
+function runDiff() {
+  const ref = tokenize($("#dictRef").value), mine = tokenize($("#dictMine").value);
+  if (!ref.length) { toast("先把原文贴进来"); return; }
+  if (!mine.length) { toast("还没有你听写的内容"); return; }
+  const ops = diffTokens(ref, mine);
+  const out = $("#dOut"); out.innerHTML = "";
+  let eq = 0, cw = [], fw = 0;
+  ops.forEach(([t, tok]) => {
+    if (t === "eq") { eq++; out.appendChild(el("span", { class: "ok", text: tok.raw + " " })); }
+    else if (t === "del") {
+      const isF = FUNCTION_WORDS.has(tok.n);
+      if (isF) { fw++; out.appendChild(el("span", { class: "missf", text: tok.raw })); }
+      else { cw.push(tok.n); out.appendChild(el("span", { class: "miss", text: tok.raw })); }
+      out.appendChild(document.createTextNode(" "));
+    } else { out.appendChild(el("span", { class: "ins", text: tok.raw })); out.appendChild(document.createTextNode(" ")); }
+  });
+  const acc = Math.round(eq / ref.length * 100);
+  $("#dAcc").textContent = "听对 " + acc + "%（" + eq + "/" + ref.length + " 词）";
+  $("#dContent").textContent = "漏实词 " + cw.length;
+  $("#dFunc").textContent = "漏虚词 " + fw;
+
+  const uniq = Array.from(new Set(cw));
+  const mb = $("#dMiss"); mb.innerHTML = "";
+  if (!uniq.length) mb.appendChild(el("div", { class: "empty", text: "实词一个没漏 —— 这段可以换难的了" }));
+  uniq.forEach(wd => {
+    const have = S.words.some(x => x.w.toLowerCase() === wd);
+    const chip = el("span", { class: "wordchip" + (have ? " added" : "") }, [wd]);
+    const b = el("button", { text: have ? "✓" : "+", title: have ? "已在生词本" : "加进生词本" });
+    if (!have) b.addEventListener("click", () => {
+      addWord(wd, "", $("#dictSrc").value.trim());
+      chip.classList.add("added"); b.textContent = "✓"; b.onclick = null; toast("已加入生词本");
+    });
+    chip.appendChild(b); mb.appendChild(chip);
+  });
+
+  lastDiff = { acc, total: ref.length, eq, content: cw.length, func: fw };
+  CAUSE_KEYS.forEach((c, i) => { if (!Number($("#cz" + (i + 1)).value)) $("#cz" + (i + 1)).value = 0; });
+  $("#cz2").value = uniq.length || 0;
+  $("#dictResult").hidden = false;
+  $("#dictResult").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function saveDict() {
+  if (!lastDiff) { toast("先点对照"); return; }
+  const causes = {};
+  CAUSE_KEYS.forEach((c, i) => causes[c] = Math.max(0, Number($("#cz" + (i + 1)).value) || 0));
+  S.dictation.push({
+    id: uid(), ts: Date.now(), src: $("#dictSrc").value.trim(), note: $("#dictNote").value.trim(),
+    total: lastDiff.total, eq: lastDiff.eq, acc: lastDiff.acc, content: lastDiff.content, func: lastDiff.func, causes
+  });
+  save(); toast("记下来了");
+  $("#dictRef").value = ""; $("#dictMine").value = ""; $("#dictNote").value = "";
+  CAUSE_KEYS.forEach((c, i) => $("#cz" + (i + 1)).value = 0);
+  lastDiff = null; $("#dictResult").hidden = true;
+  renderDict(); renderToday();
+}
+function renderDict() {
+  const rows = S.dictation.slice().reverse().slice(0, 40).map(r => {
+    const causes = CAUSE_KEYS.filter(c => r.causes && r.causes[c]).map(c => CAUSE_LAB[c] + "×" + r.causes[c]).join("、");
+    const del = el("button", { class: "btn ghost sm", text: "删", onclick: () => { S.dictation = S.dictation.filter(x => x.id !== r.id); save(); renderDict(); renderCauseChart(); renderToday(); } });
+    return [fmtCn(new Date(r.ts)), r.src || "—", r.acc + "%", r.content, causes || "—", del];
+  });
+  const t = $("#dictTable"); t.innerHTML = "";
+  t.appendChild(table(["日期", "材料", "听对", "漏实词", "错因", ""], rows, "还没有精听记录"));
+  renderCauseChart();
+}
+function renderCauseChart() {
+  const host = $("#causeChart"); host.innerHTML = "";
+  if (!S.dictation.length) { host.appendChild(el("div", { class: "empty", text: "记满两周就能看出趋势" })); return; }
+  const buckets = new Map();
+  S.dictation.forEach(r => {
+    const k = weekKey(new Date(r.ts));                       // ← 按"那一周的周一"归桶
+    if (!buckets.has(k)) buckets.set(k, { liaison: 0, vocab: 0, grammar: 0, drift: 0, n: 0 });
+    const b = buckets.get(k); b.n++;
+    CAUSE_KEYS.forEach(c => b[c] += Number(r.causes && r.causes[c]) || 0);
+  });
+  const keys = Array.from(buckets.keys()).sort().slice(-12);
+  const W = 640, H = 220, PL = 34, PB = 34, PT = 12, PR = 8;
+  const max = Math.max(4, ...keys.map(k => CAUSE_KEYS.reduce((p, c) => p + buckets.get(k)[c], 0)));
+  const s = svgNode(W, H);
+  const y = v => PT + (H - PT - PB) * (1 - v / max);
+  for (let g = 0; g <= 4; g++) {
+    const v = max * g / 4;
+    s.appendChild(sv("line", { class: "grid", x1: PL, x2: W - PR, y1: y(v), y2: y(v) }));
+    const tx = sv("text", { x: PL - 6, y: y(v) + 3, "text-anchor": "end" }); tx.textContent = Math.round(v); s.appendChild(tx);
+  }
+  const bw = (W - PL - PR) / keys.length, barw = Math.min(42, bw * 0.6);
+  keys.forEach((k, i) => {
+    const b = buckets.get(k); let acc = 0;
+    const cx = PL + bw * i + (bw - barw) / 2;
+    CAUSE_KEYS.forEach(c => {
+      const v = b[c]; if (!v) return;
+      s.appendChild(sv("rect", { x: cx, y: y(acc + v), width: barw, height: Math.max(1, y(acc) - y(acc + v)), fill: CAUSE_COLOR[c], rx: 2 }));
+      acc += v;
+    });
+    const d = parseYmd(k);
+    const tx = sv("text", { x: cx + barw / 2, y: H - PB + 14, "text-anchor": "middle" });
+    tx.textContent = (d.getMonth() + 1) + "/" + d.getDate(); s.appendChild(tx);
+    const tn = sv("text", { x: cx + barw / 2, y: H - PB + 26, "text-anchor": "middle" });
+    tn.textContent = b.n + " 次"; s.appendChild(tn);
+  });
+  s.appendChild(sv("line", { class: "axis", x1: PL, x2: W - PR, y1: y(0), y2: y(0) }));
+  host.appendChild(s);
+  const leg = el("div", { class: "row", style: "margin-top:8px" });
+  CAUSE_KEYS.forEach(c => leg.appendChild(el("span", { class: "pill mute", html: '<span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:' + CAUSE_COLOR[c] + ';margin-right:5px"></span>' + CAUSE_LAB[c] })));
+  host.appendChild(leg);
+}
+
+/* ======================= 生词本 ======================= */
+const INTERVALS = [0, 1, 2, 4, 7, 15, 30];
+function addWord(w, meaning, src) {
+  w = String(w).trim(); if (!w) return false;
+  if (S.words.some(x => x.w.toLowerCase() === w.toLowerCase())) return false;
+  S.words.push({ id: uid(), w, meaning: meaning || "", src: src || "", box: 0, due: ymd(today()), added: Date.now(), lapses: 0 });
+  save(); return true;
+}
+function dueWords() { const k = ymd(today()); return S.words.filter(x => !x.due || x.due <= k); }
+function renderWords() {
+  const all = S.words, d = dueWords();
+  $("#wTotal").textContent = all.length;
+  $("#wDue").textContent = d.length;
+  $("#wYoung").textContent = all.filter(x => (x.box || 0) < 3).length;
+  $("#wMature").textContent = all.filter(x => (x.box || 0) >= 5).length;
+  $("#revCount").textContent = d.length ? "今天有 " + d.length + " 个词要复习" : "今天没有要复习的词";
+  $("#btnRev").disabled = !d.length;
+
+  const q = $("#wFilter").value.trim().toLowerCase(), sort = $("#wSort").value;
+  let list = all.filter(x => !q || x.w.toLowerCase().includes(q) || (x.meaning || "").includes(q));
+  list = list.sort((a, b) => sort === "new" ? b.added - a.added : sort === "lapse" ? (b.lapses || 0) - (a.lapses || 0) : String(a.due).localeCompare(String(b.due)));
+  const rows = list.slice(0, 200).map(x => {
+    const mean = el("input", { type: "text", value: x.meaning || "", placeholder: "补个意思", style: "font-size:13px;padding:4px 7px" });
+    mean.addEventListener("change", () => { x.meaning = mean.value.trim(); save(); });
+    const del = el("button", { class: "btn ghost sm", text: "删", onclick: () => { S.words = S.words.filter(y => y.id !== x.id); save(); renderWords(); renderToday(); } });
+    return [el("b", { text: x.w }), mean, "第 " + ((x.box || 0) + 1) + " 档", x.due || "—", x.lapses || 0, del];
+  });
+  const t = $("#wordTable"); t.innerHTML = "";
+  t.appendChild(table(["词", "意思", "档位", "下次复习", "错过", ""], rows, "生词本是空的 —— 去精听里点 + 加词最省事"));
+}
+
+/* ---- 复习 ---- */
+let rev = null;
+function startRev() {
+  const q = dueWords().slice();
+  for (let i = q.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[q[i], q[j]] = [q[j], q[i]]; }
+  rev = { queue: q.map(x => x.id), mode: $("#revMode").value, done: 0, total: q.length, cur: null };
+  $("#revStart").hidden = true; $("#revBox").hidden = false;
+  nextCard();
+}
+function quitRev() { rev = null; $("#revStart").hidden = false; $("#revBox").hidden = true; renderWords(); renderToday(); }
+function nextCard() {
+  if (!rev) return;
+  if (!rev.queue.length) { quitRev(); toast("这一轮复习完了"); return; }
+  const id = rev.queue.shift();
+  const w = S.words.find(x => x.id === id);
+  if (!w) return nextCard();
+  rev.cur = w;
+  $("#revProg").textContent = "还剩 " + (rev.queue.length + 1) + " 个";
+  $("#revBack").hidden = true;
+  const listen = rev.mode === "listen";
+  $("#revListenIn").hidden = !listen;
+  $("#revShowBtn").hidden = listen;
+  if (listen) {
+    $("#revFront").textContent = "🔊";
+    $("#revHintLine").textContent = "听发音，把词拼出来";
+    $("#revTyped").value = ""; $("#revTyped").focus();
+    speak(w.w);
+  } else {
+    $("#revFront").textContent = w.w;
+    $("#revHintLine").textContent = "想一下意思，再看答案";
+  }
+}
+function reveal() {
+  const w = rev && rev.cur; if (!w) return;
+  $("#revAnswer").textContent = w.w + (w.meaning ? "　" + w.meaning : "");
+  $("#revSrc").textContent = (w.src ? "来自：" + w.src + " · " : "") + "第 " + ((w.box || 0) + 1) + " 档";
+  $("#revBack").hidden = false;
+  $("#revShowBtn").hidden = true;
+}
+function checkSpell() {
+  const w = rev && rev.cur; if (!w) return;
+  const typed = norm($("#revTyped").value);
+  const ok = typed === norm(w.w);
+  $("#revHintLine").textContent = ok ? "拼对了" : "拼的是 " + ($("#revTyped").value.trim() || "（空）");
+  $("#revFront").textContent = ok ? "✓" : "✕";
+  reveal();
+  if (!ok) $("#revAnswer").innerHTML = '<span style="color:var(--bad)">' + w.w + "</span>" + (w.meaning ? "　" + w.meaning : "");
+}
+function grade(good) {
+  const w = rev && rev.cur; if (!w) return;
+  if (good) {
+    w.box = Math.min(INTERVALS.length - 1, (w.box || 0) + 1);
+    w.due = ymd(addDays(today(), INTERVALS[w.box]));
+  } else {
+    w.box = 0; w.lapses = (w.lapses || 0) + 1; w.due = ymd(today());
+    rev.queue.push(w.id);                                  // ← 本轮末尾再考一次（说明和行为一致）
+    toast("放回本轮末尾，等下再考一次");
+  }
+  save(); nextCard();
+}
+let voice = null;
+function pickVoice() {
+  const vs = speechSynthesis.getVoices();
+  voice = vs.find(v => /en-GB/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang)) || null;
+  $("#ttsNote").hidden = !!(voice && /en-GB/i.test(voice.lang)) || !vs.length;
+}
+function speak(text) {
+  if (!("speechSynthesis" in window)) { toast("这台设备不支持朗读"); return; }
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-GB"; u.rate = 0.9; if (voice) u.voice = voice;
+    speechSynthesis.speak(u);
+  } catch (e) { toast("朗读失败"); }
+}
+</script>
+<script>
+"use strict";
+/* ======================= 成绩 ======================= */
+function renderScorePreview() {
+  const b = bandOf($("#scKind").value, $("#scRaw").value);
+  $("#scPreview").textContent = "换算分数：" + (b === null ? "—" : b.toFixed(1).replace(/\.0$/, ".0"));
+}
+function saveScore() {
+  const raw = Number($("#scRaw").value);
+  if (!isFinite(raw) || raw < 0 || raw > 40) { toast("答对题数填 0 到 40"); return; }
+  const kind = $("#scKind").value;
+  S.scores.push({ id: uid(), ts: parseYmd($("#scDate").value || ymd(today())).getTime(), kind, raw, band: bandOf(kind, raw), book: $("#scBook").value.trim() });
+  S.scores.sort((a, b) => a.ts - b.ts);
+  save(); toast("记下来了"); $("#scRaw").value = ""; $("#scBook").value = "";
+  renderScorePreview(); renderScores(); renderToday();
+}
+function renderScores() {
+  const rows = S.scores.slice().reverse().slice(0, 60).map(r => {
+    const del = el("button", { class: "btn ghost sm", text: "删", onclick: () => { S.scores = S.scores.filter(x => x.id !== r.id); save(); renderScores(); renderToday(); } });
+    const gap = r.kind === "listening" ? 26 - r.raw : 30 - r.raw;
+    return [fmtCn(new Date(r.ts)), r.kind === "listening" ? "听力" : "阅读", r.raw + " 题", String(r.band),
+    gap > 0 ? el("span", { class: "pill warn", text: "离 6.5 还差 " + gap + " 题" }) : el("span", { class: "pill", text: "已达 6.5" }),
+    r.book || "—", del];
+  });
+  const t = $("#scoreTable"); t.innerHTML = "";
+  t.appendChild(table(["日期", "科目", "答对", "分数", "离目标", "套题", ""], rows, "还没有成绩记录"));
+
+  const brows = S.bands.slice().reverse().map(r => {
+    const del = el("button", { class: "btn ghost sm", text: "删", onclick: () => { S.bands = S.bands.filter(x => x.id !== r.id); save(); renderScores(); } });
+    const weak = ["l", "r", "w", "s"].filter(k => r[k] < S.settings.each).map(k => ({ l: "听", r: "读", w: "写", s: "说" }[k])).join("");
+    return [fmtCn(new Date(r.ts)), r.l, r.r, r.w, r.s, el("b", { text: String(r.overall) }), weak ? el("span", { class: "pill bad", text: weak + " 没到 " + S.settings.each }) : el("span", { class: "pill", text: "单项都够" }), del];
+  });
+  const bt = $("#bandTable"); bt.innerHTML = "";
+  bt.appendChild(table(["日期", "听", "读", "写", "说", "总分", "单项", ""], brows, "还没有整套模考记录"));
+  renderScoreChart();
+}
+function renderScoreChart() {
+  const host = $("#scoreChart"); host.innerHTML = "";
+  if (S.scores.length < 2) { host.appendChild(el("div", { class: "empty", text: "记满两次就会画出走势" })); return; }
+  const W = 640, H = 240, PL = 30, PB = 30, PT = 12, PR = 10;
+  const pts = S.scores.slice(-30);
+  const t0 = pts[0].ts, t1 = pts[pts.length - 1].ts, span = Math.max(1, t1 - t0);
+  const lo = 3.5, hi = 9;
+  const x = t => PL + (W - PL - PR) * (t - t0) / span;
+  const y = v => PT + (H - PT - PB) * (1 - (v - lo) / (hi - lo));
+  const s = svgNode(W, H);
+  for (let v = 4; v <= 9; v += 1) {
+    s.appendChild(sv("line", { class: "grid", x1: PL, x2: W - PR, y1: y(v), y2: y(v) }));
+    const tx = sv("text", { x: PL - 5, y: y(v) + 3, "text-anchor": "end" }); tx.textContent = v; s.appendChild(tx);
+  }
+  const tg = Number(S.settings.each) || 6.5;
+  s.appendChild(sv("line", { class: "tline", x1: PL, x2: W - PR, y1: y(tg), y2: y(tg) }));
+  const tl = sv("text", { x: W - PR, y: y(tg) - 5, "text-anchor": "end" }); tl.setAttribute("fill", cssVar("--good")); tl.textContent = "目标 " + tg; s.appendChild(tl);
+  [["listening", "#2f6f57"], ["reading", "#4a7ba8"]].forEach(([kind, col]) => {
+    const p = pts.filter(r => r.kind === kind);
+    if (p.length > 1) s.appendChild(sv("polyline", { points: p.map(r => x(r.ts) + "," + y(r.band)).join(" "), fill: "none", stroke: col, "stroke-width": 2, "stroke-linejoin": "round" }));
+    p.forEach(r => s.appendChild(sv("circle", { cx: x(r.ts), cy: y(r.band), r: 3.5, fill: col })));
+  });
+  [t0, t1].forEach((t, i) => { const tx = sv("text", { x: i ? W - PR : PL, y: H - PB + 16, "text-anchor": i ? "end" : "start" }); const d = new Date(t); tx.textContent = (d.getMonth() + 1) + "/" + d.getDate(); s.appendChild(tx); });
+  host.appendChild(s);
+}
+function renderBandPreview() {
+  const o = overallOf($("#bL").value, $("#bR").value, $("#bW").value, $("#bS").value);
+  $("#bPreview").textContent = "总分：" + (o === null ? "四项都填才算" : o);
+}
+function saveBand() {
+  const l = Number($("#bL").value), r = Number($("#bR").value), w = Number($("#bW").value), s = Number($("#bS").value);
+  const o = overallOf(l, r, w, s);
+  if (o === null) { toast("四项都要填"); return; }
+  S.bands.push({ id: uid(), ts: Date.now(), l, r, w, s, overall: o });
+  save(); toast("总分 " + o); ["bL", "bR", "bW", "bS"].forEach(i => $("#" + i).value = "");
+  renderBandPreview(); renderScores();
+}
+function renderConvTables() {
+  [["#tabL", L_TAB], ["#tabR", R_TAB]].forEach(([sel, tab]) => {
+    const rows = rangesOf(tab).map(([lo, hi, b]) => [lo === hi ? String(lo) : lo + "–" + hi, String(b)]);
+    const t = $(sel); t.innerHTML = ""; t.appendChild(table(["答对题数", "分数"], rows));
+  });
+}
+
+/* ======================= 口语 ======================= */
+const QP1 = ["Do you work or are you a student?", "What do you like most about your hometown?", "How often do you use public transport?", "Do you prefer mornings or evenings? Why?", "What kind of weather do you like best?", "Do you enjoy cooking? Why or why not?", "How do you usually spend your weekends?", "Are you interested in photography?", "Do you often read news online?", "What kind of music do you listen to while working?", "Do you keep houseplants at home?", "How important is sleep to you?", "Do you prefer shopping online or in stores?", "What was your favourite subject at school?", "Do you use social media much?", "How do you keep in touch with old friends?", "Do you like watching sport on television?", "What do you usually do to relax after a long day?", "Have your eating habits changed in recent years?", "Do you enjoy travelling by train?", "Is there a park near where you live?", "Do you write things down by hand or type them?", "How do you feel about noisy places?", "Do you celebrate your birthday in a special way?"];
+const QP2 = ["Describe a skill you learned that took a long time.\n· what the skill is\n· how you learned it\n· why it took so long\n· and explain how you feel about it now",
+  "Describe a place you often go to think.\n· where it is\n· how often you go\n· what you do there\n· and explain why it helps you",
+  "Describe a piece of technology you find useful.\n· what it is\n· when you started using it\n· how you use it\n· and explain why it matters to you",
+  "Describe a time you helped someone.\n· who you helped\n· what the situation was\n· what you did\n· and explain how you felt afterwards",
+  "Describe a book or article that changed how you think.\n· what it was\n· when you read it\n· what it was about\n· and explain what changed",
+  "Describe a long journey you remember well.\n· where you went\n· who you were with\n· what happened\n· and explain why you remember it",
+  "Describe a decision you took a long time to make.\n· what the decision was\n· why it was difficult\n· what you finally chose\n· and explain whether it was right",
+  "Describe someone you know who works very hard.\n· who the person is\n· what they do\n· how you know them\n· and explain what you think of their attitude",
+  "Describe a meal you enjoyed cooking or eating.\n· what it was\n· who was there\n· where you had it\n· and explain why it was memorable",
+  "Describe something you own that you have had for a long time.\n· what it is\n· how you got it\n· how you use it\n· and explain why you keep it",
+  "Describe a class or course you enjoyed.\n· what it was about\n· where you took it\n· what you did in it\n· and explain why you enjoyed it",
+  "Describe a time you had to speak in front of others.\n· when it was\n· what you talked about\n· who was listening\n· and explain how you felt",
+  "Describe a change you would like to see in your city.\n· what it is\n· why it is needed\n· who it would help\n· and explain how it could happen",
+  "Describe a photograph you like.\n· what is in it\n· who took it\n· when it was taken\n· and explain why you like it",
+  "Describe a habit you would like to break or build.\n· what it is\n· how long you have had it\n· why you want to change it\n· and explain what has stopped you so far",
+  "Describe a website or app you use often.\n· what it is\n· what you use it for\n· how often you use it\n· and explain why it is useful"];
+const QP3 = ["Do you think schools should teach practical skills as well as academic subjects?", "Why do some people find it hard to learn new things as adults?", "How has technology changed the way people learn?", "Should governments spend more on public transport than on roads?", "Do you think cities are becoming better or worse places to live?", "Is it important for people to have hobbies outside work?", "Why do some people prefer to work alone?", "How do you think working life will change in twenty years?", "Do older and younger generations value the same things?", "Should companies be responsible for their employees' wellbeing?", "Is it better to be specialised or to know a little about many things?", "Why do people enjoy stories about the past?", "How does advertising influence what people buy?", "Do you think people read less than they used to?", "Should famous people have a right to privacy?", "Is competition always a good thing for children?", "How can communities encourage people to be more environmentally responsible?", "Do you think money is the main reason people change jobs?", "Why do some traditions disappear?", "Should everyone learn a second language?", "Is it fair that some jobs are paid much more than others?", "How important is it to keep local shops in a neighbourhood?", "Do people trust news media as much as before?", "What makes a good leader?"];
+const SP_TAGS = ["讲满了时间", "卡壳超过两次", "想不起词", "语法明显出错", "只讲了表面没展开"];
+let spState = null, mediaRec = null, chunks = [], curStream = null;
+function newQ() {
+  const p = $("#spPart").value;
+  const bank = p === "1" ? QP1 : p === "2" ? QP2 : QP3;
+  const q = bank[Math.floor(Math.random() * bank.length)];
+  $("#spQPart").textContent = "Part " + p + (p === "2" ? " · 1 分钟准备，2 分钟作答" : "");
+  $("#spQ").textContent = q;
+  $("#spQ").style.whiteSpace = p === "2" ? "pre-wrap" : "normal";
+  $("#spSave").hidden = true;
+}
+function spTick() {
+  if (!spState) return;
+  const now = Math.floor((Date.now() - spState.t0) / 1000);
+  const left = spState.limit - now;
+  $("#spTimer").textContent = mmss(Math.abs(left));
+  $("#spTimer").className = "timer " + (left < 0 ? "over" : "run");
+  if (left === 0 && !spState.beeped) { spState.beeped = true; beep(); }
+  if (spState.phase === "prep" && left <= 0) startAnswer();
+}
+function beep() {
+  try {
+    const C = window.AudioContext || window.webkitAudioContext; if (!C) return;
+    const c = new C(), o = c.createOscillator(), g = c.createGain();
+    o.connect(g); g.connect(c.destination); o.frequency.value = 880; g.gain.value = .12;
+    o.start(); setTimeout(() => { o.stop(); c.close(); }, 220);
+  } catch (e) { }
+}
+async function spStart() {
+  const p = $("#spPart").value;
+  if ($("#spQ").textContent.startsWith("点")) newQ();
+  if (p === "2") { spState = { phase: "prep", t0: Date.now(), limit: 60, beeped: false }; $("#spPhase").textContent = "准备时间 —— 可以写关键词"; }
+  else { await startAnswer(true); return; }
+  $("#btnSpStart").disabled = true; $("#btnSpStop").disabled = false;
+  clearInterval(spState.iv); spState.iv = setInterval(spTick, 250); spTick();
+}
+async function startAnswer(fresh) {
+  const p = $("#spPart").value;
+  const limit = p === "2" ? 120 : p === "1" ? 45 : 60;
+  if (spState) clearInterval(spState.iv);
+  spState = { phase: "answer", t0: Date.now(), limit, beeped: false, part: p, q: $("#spQ").textContent };
+  $("#spPhase").textContent = "作答中 —— 讲满 " + mmss(limit);
+  $("#btnSpStart").disabled = true; $("#btnSpStop").disabled = false;
+  spState.iv = setInterval(spTick, 250); spTick(); beep();
+  if ($("#spRec").checked) await recStart();
+}
+async function recStart() {
+  try {
+    curStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    chunks = []; mediaRec = new MediaRecorder(curStream);
+    mediaRec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+    mediaRec.start();
+  } catch (e) { mediaRec = null; toast("拿不到麦克风，这次不录音"); }
+}
+function spStop() {
+  if (!spState) return;
+  const secs = Math.floor((Date.now() - spState.t0) / 1000);
+  clearInterval(spState.iv);
+  const snap = { part: spState.part || $("#spPart").value, q: spState.q || $("#spQ").textContent, secs, phase: spState.phase };
+  spState = null;
+  $("#btnSpStart").disabled = false; $("#btnSpStop").disabled = true;
+  $("#spPhase").textContent = "讲了 " + mmss(secs);
+  $("#spTimer").className = "timer";
+  const finish = async (blob) => {
+    let audioId = null;
+    if (blob && blob.size) {
+      audioId = uid();
+      try { await audioPut(audioId, blob); } catch (e) { audioId = null; toast("录音存不下来（浏览器不支持）"); }
+    }
+    pendingSp = Object.assign(snap, { audioId });
+    $("#spTags").innerHTML = "";
+    SP_TAGS.forEach(t => {
+      const b = el("button", { class: "tagbtn", type: "button", "aria-pressed": "false", text: t });
+      b.addEventListener("click", () => b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") === "true" ? "false" : "true"));
+      $("#spTags").appendChild(b);
+    });
+    $("#spNote").value = "";
+    $("#spSave").hidden = false;
+    $("#spSave").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+  if (mediaRec && mediaRec.state !== "inactive") {
+    mediaRec.onstop = () => {
+      const blob = new Blob(chunks, { type: mediaRec.mimeType || "audio/webm" });
+      if (curStream) curStream.getTracks().forEach(t => t.stop());
+      mediaRec = null; curStream = null; finish(blob);
+    };
+    mediaRec.stop();
+  } else finish(null);
+}
+let pendingSp = null;
+function spSave() {
+  if (!pendingSp) return;
+  const tags = $$("#spTags .tagbtn").filter(b => b.getAttribute("aria-pressed") === "true").map(b => b.textContent);
+  S.speaking.push({ id: uid(), ts: Date.now(), part: pendingSp.part, q: pendingSp.q, secs: pendingSp.secs, tags, note: $("#spNote").value.trim(), audioId: pendingSp.audioId || null });
+  save(); pendingSp = null; $("#spSave").hidden = true; toast("存好了"); renderSpeak();
+}
+function spDrop() { if (pendingSp && pendingSp.audioId) audioDel(pendingSp.audioId); pendingSp = null; $("#spSave").hidden = true; }
+function renderSpeak() {
+  const rows = S.speaking.slice().reverse().slice(0, 40).map(r => {
+    const play = r.audioId
+      ? el("button", { class: "btn ghost sm", text: "▶ 回听", onclick: async () => {
+        try {
+          const b = await audioGet(r.audioId);
+          if (!b) { toast("这条录音已经不在了"); return; }
+          const url = URL.createObjectURL(b);
+          const a = el("audio", { controls: "", src: url, style: "width:100%" });
+          sheet("回听 · " + fmtCn(new Date(r.ts)), el("div", null, [el("p", { class: "essay", text: r.q }), a]),
+            [el("button", { class: "btn ghost", text: "关闭", onclick: () => { URL.revokeObjectURL(url); $("#dlg").close(); } })]);
+        } catch (e) { toast("读不出录音"); }
+      } })
+      : el("span", { class: "pill mute", text: "没录" });
+    const del = el("button", { class: "btn ghost sm", text: "删", onclick: () => { if (r.audioId) audioDel(r.audioId); S.speaking = S.speaking.filter(x => x.id !== r.id); save(); renderSpeak(); } });
+    const q = el("span", { text: r.q.split("\n")[0].slice(0, 46) + (r.q.length > 46 ? "…" : "") });
+    return [fmtCn(new Date(r.ts)), "P" + r.part, q, mmss(r.secs), (r.tags || []).join("、") || "—", play, del];
+  });
+  const t = $("#spTable"); t.innerHTML = "";
+  t.appendChild(table(["日期", "", "题目", "时长", "自评", "", ""], rows, "还没有口语记录"));
+}
+
+/* ======================= 写作 ======================= */
+const WR1 = ["The chart below shows the number of visitors to three museums in one city between 2015 and 2023. Summarise the information by selecting and reporting the main features.",
+  "The table below gives information about household spending on food, housing and transport in four countries in 2022.",
+  "The two maps below show a coastal village in 1990 and today. Summarise the changes.",
+  "The diagram below shows how rainwater is collected and treated for drinking in a small town.",
+  "The graph below shows average working hours per week in four countries from 1990 to 2020."];
+const WR2 = ["Some people believe that universities should only offer courses that lead directly to employment. To what extent do you agree or disagree?",
+  "In many countries people are living longer. What problems does this cause, and what can be done about them?",
+  "Some think children should start school as early as possible; others believe they should stay at home longer. Discuss both views and give your own opinion.",
+  "Technology has made it easier to work from anywhere. Do the advantages of this outweigh the disadvantages?",
+  "Governments should spend money on public art such as sculptures rather than on practical needs. To what extent do you agree?",
+  "Many people move to cities for work. What are the effects of this on rural areas, and how can they be addressed?",
+  "Some argue that traditional skills and ways of life are being lost. Why is this happening, and is it a negative development?",
+  "Competition among children in school is increasing. Is this a positive or negative development?"];
+let wrState = null;
+function newWrQ() {
+  const t = $("#wrTask").value;
+  const bank = t === "1" ? WR1 : WR2;
+  $("#wrQ").textContent = bank[Math.floor(Math.random() * bank.length)];
+  $("#wrTip").textContent = t === "1" ? "建议：先花 3 分钟找出最明显的两三个趋势。" : "建议：前 5 分钟只列提纲。";
+}
+function countWords(s) { return (String(s).trim().match(/[A-Za-z''-]+|\d+/g) || []).length; }
+function wrTick() {
+  if (!wrState) return;
+  const now = Math.floor((Date.now() - wrState.t0) / 1000);
+  const left = wrState.limit - now;
+  $("#wrTimer").textContent = (left < 0 ? "超 " : "") + mmss(Math.abs(left));
+  $("#wrTimer").className = "pill " + (left < 0 ? "bad" : left < 300 ? "warn" : "mute");
+  if (left === 0 && !wrState.beeped) { wrState.beeped = true; beep(); toast("时间到 —— 现在写完的部分就是考试里能拿到的"); }
+}
+function wrStart() {
+  if ($("#wrQ").textContent.startsWith("点")) newWrQ();
+  const t = $("#wrTask").value;
+  wrState = { t0: Date.now(), limit: t === "1" ? 1200 : 2400, task: t, q: $("#wrQ").textContent, beeped: false };
+  wrState.iv = setInterval(wrTick, 500); wrTick();
+  $("#btnWrStart").disabled = true; $("#btnWrDone").disabled = false;
+  $("#wrText").focus();
+}
+function wrDone() {
+  if (!wrState) return;
+  const mins = Math.round((Date.now() - wrState.t0) / 60000);
+  clearInterval(wrState.iv);
+  pendingWr = { task: wrState.task, q: wrState.q, minutes: mins, words: countWords($("#wrText").value), text: $("#wrText").value };
+  wrState = null;
+  $("#btnWrStart").disabled = false; $("#btnWrDone").disabled = true;
+  ["sfTa", "sfCc", "sfLr", "sfGra"].forEach(id => {
+    const s = $("#" + id); s.innerHTML = "";
+    s.appendChild(el("option", { value: "", text: "—" }));
+    for (let b = 4; b <= 9; b += 0.5) s.appendChild(el("option", { value: String(b), text: String(b) }));
+  });
+  $("#wrSelf").hidden = false;
+  $("#wrSelf").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+let pendingWr = null;
+function wrSave() {
+  if (!pendingWr) return;
+  if (!pendingWr.text.trim()) { toast("还没写东西"); return; }
+  const self = { ta: $("#sfTa").value, cc: $("#sfCc").value, lr: $("#sfLr").value, gra: $("#sfGra").value };
+  S.writing.push(Object.assign({ id: uid(), ts: Date.now(), self }, pendingWr));
+  save(); pendingWr = null; $("#wrSelf").hidden = true;
+  $("#wrText").value = ""; $("#wrCount").textContent = "0 词"; $("#wrTimer").textContent = "00:00"; $("#wrTimer").className = "pill mute";
+  toast("存好了"); renderWrite();
+}
+function renderWrite() {
+  const rows = S.writing.slice().reverse().map(r => {
+    const view = el("button", { class: "btn ghost sm", text: "看", onclick: () => {
+      const self = ["ta", "cc", "lr", "gra"].map((k, i) => (r.self && r.self[k]) ? ["TA", "CC", "LR", "GRA"][i] + " " + r.self[k] : null).filter(Boolean).join(" · ");
+      sheet("Task " + r.task + " · " + fmtCn(new Date(r.ts)), el("div", null, [
+        el("div", { class: "qbox", style: "margin-bottom:12px", text: r.q }),
+        el("div", { class: "row", style: "margin-bottom:10px" }, [
+          el("span", { class: "pill mute", text: r.words + " 词" }),
+          el("span", { class: "pill mute", text: r.minutes + " 分钟" }),
+          self ? el("span", { class: "pill", text: "自评 " + self }) : null
+        ]),
+        el("div", { class: "essay", text: r.text })
+      ]), [
+        el("button", { class: "btn ghost", text: "复制全文", onclick: async () => { try { await navigator.clipboard.writeText(r.q + "\n\n" + r.text); toast("复制好了，可以发给我批改"); } catch (e) { toast("复制失败，手动选中吧"); } } }),
+        el("button", { class: "btn ghost", text: "关闭", onclick: () => $("#dlg").close() })
+      ]);
+    } });
+    const del = el("button", { class: "btn ghost sm", text: "删", onclick: () => { S.writing = S.writing.filter(x => x.id !== r.id); save(); renderWrite(); } });
+    const wordPill = el("span", { class: "pill" + (r.words < (r.task === "1" ? 150 : 250) ? " bad" : ""), text: r.words + " 词" });
+    return [fmtCn(new Date(r.ts)), "T" + r.task, wordPill, r.minutes + " 分", (r.self && r.self.ta) ? "TA " + r.self.ta : "—", view, del];
+  });
+  const t = $("#wrTable"); t.innerHTML = "";
+  t.appendChild(table(["日期", "", "字数", "用时", "自评", "", ""], rows, "还没有作文"));
+}
+
+/* ======================= 数据 ======================= */
+function openData() {
+  const stat = el("div", null, [
+    el("div", { class: "kv" }, [el("span", { text: "精听记录" }), el("b", { text: S.dictation.length + " 次" })]),
+    el("div", { class: "kv" }, [el("span", { text: "生词" }), el("b", { text: S.words.length + " 个" })]),
+    el("div", { class: "kv" }, [el("span", { text: "成绩" }), el("b", { text: S.scores.length + " 条" })]),
+    el("div", { class: "kv" }, [el("span", { text: "口语" }), el("b", { text: S.speaking.length + " 次" })]),
+    el("div", { class: "kv" }, [el("span", { text: "作文" }), el("b", { text: S.writing.length + " 篇" })]),
+    el("p", { class: "note", text: "导出的 JSON 不含录音文件（录音只存在这台设备上）。换设备前先导出，到新设备再导入。" })
+  ]);
+  if (memoryOnly) stat.insertBefore(el("div", { class: "warnbox", text: "这个浏览器不让存本地数据（可能是无痕模式）—— 关掉页面就没了，记得随时导出。" }), stat.firstChild);
+  const fileIn = el("input", { type: "file", accept: ".json,application/json", style: "display:none" });
+  fileIn.addEventListener("change", () => {
+    const f = fileIn.files[0]; if (!f) return;
+    const rd = new FileReader();
+    rd.onload = () => {
+      try {
+        const o = JSON.parse(rd.result);
+        const merged = normalize(o);
+        S = merged; save(); $("#dlg").close(); boot(); toast("导入好了");
+      } catch (e) { toast("这个文件读不出来"); }
+    };
+    rd.readAsText(f);
+  });
+  stat.appendChild(fileIn);
+  sheet("数据", stat, [
+    el("button", { class: "btn ghost danger", text: "清空全部", onclick: () => { $("#dlg").close(); confirmSheet("清空全部", "所有练习记录、生词、成绩和作文都会删掉，录音也一起删。这一步没法撤销。", "确认清空", async () => { for (const r of S.speaking) if (r.audioId) await audioDel(r.audioId); S = structuredClone(DEFAULT_STATE); save(); boot(); toast("清空了"); }); } }),
+    el("button", { class: "btn ghost", text: "导入", onclick: () => fileIn.click() }),
+    el("button", { class: "btn", text: "导出 JSON", onclick: () => {
+      const blob = new Blob([JSON.stringify(S, null, 2)], { type: "application/json" });
+      const a = el("a", { href: URL.createObjectURL(blob), download: "雅思练习台-" + ymd(today()) + ".json" });
+      document.body.appendChild(a); a.click(); a.remove(); toast("导出了");
+    } })
+  ]);
+}
+
+/* ======================= 启动 ======================= */
+function showTab(name) {
+  $$("nav.tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === name)));
+  ["today", "dict", "words", "score", "speak", "write"].forEach(t => $("#tab-" + t).hidden = t !== name);
+  window.scrollTo({ top: 0 });
+}
+function boot() {
+  $("#setStart").value = S.settings.startDate;
+  $("#setTarget").value = S.settings.target;
+  $("#setEach").value = S.settings.each;
+  $("#scDate").value = ymd(today());
+  if (S.settings.theme) document.documentElement.setAttribute("data-theme", S.settings.theme);
+  renderToday(); renderDict(); renderWords(); renderScores(); renderConvTables(); renderSpeak(); renderWrite(); renderScorePreview(); renderBandPreview();
+}
+function bind() {
+  $$("nav.tabs button").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
+  $("#btnData").addEventListener("click", openData);
+  $("#btnTheme").addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme");
+    const dark = cur ? cur === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    const next = dark ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    S.settings.theme = next; save(); renderCauseChart(); renderScoreChart();
+  });
+  ["setStart", "setTarget", "setEach"].forEach(id => $("#" + id).addEventListener("change", () => {
+    const v = $("#" + id).value;
+    if (id === "setStart") { if (!v) return; S.settings.startDate = ymd(mondayOf(parseYmd(v))); $("#setStart").value = S.settings.startDate; }
+    if (id === "setTarget") S.settings.target = Number(v) || 7;
+    if (id === "setEach") S.settings.each = Number(v) || 6.5;
+    save(); renderToday(); renderScores();
+  }));
+  $("#btnDiff").addEventListener("click", runDiff);
+  $("#btnDictClear").addEventListener("click", () => { $("#dictRef").value = ""; $("#dictMine").value = ""; $("#dictResult").hidden = true; lastDiff = null; });
+  $("#btnDictSave").addEventListener("click", saveDict);
+  $("#btnAddWord").addEventListener("click", () => {
+    const w = $("#wNew").value.trim();
+    if (!w) { toast("先写个词"); return; }
+    if (addWord(w, $("#wMean").value.trim(), "手动")) { $("#wNew").value = ""; $("#wMean").value = ""; renderWords(); renderToday(); toast("加好了"); }
+    else toast("这个词已经在生词本里了");
+  });
+  $("#wNew").addEventListener("keydown", e => { if (e.key === "Enter") $("#btnAddWord").click(); });
+  $("#wMean").addEventListener("keydown", e => { if (e.key === "Enter") $("#btnAddWord").click(); });
+  $("#wFilter").addEventListener("input", renderWords);
+  $("#wSort").addEventListener("change", renderWords);
+  $("#btnRev").addEventListener("click", startRev);
+  $("#btnRevQuit").addEventListener("click", quitRev);
+  $("#btnReveal").addEventListener("click", reveal);
+  $("#btnGood").addEventListener("click", () => grade(true));
+  $("#btnBad").addEventListener("click", () => grade(false));
+  $("#btnSay").addEventListener("click", () => rev && rev.cur && speak(rev.cur.w));
+  $("#btnCheckSpell").addEventListener("click", checkSpell);
+  $("#revTyped").addEventListener("keydown", e => { if (e.key === "Enter") checkSpell(); });
+  $("#scKind").addEventListener("change", renderScorePreview);
+  $("#scRaw").addEventListener("input", renderScorePreview);
+  $("#btnScSave").addEventListener("click", saveScore);
+  ["bL", "bR", "bW", "bS"].forEach(i => $("#" + i).addEventListener("input", renderBandPreview));
+  $("#btnBandSave").addEventListener("click", saveBand);
+  $("#btnNewQ").addEventListener("click", newQ);
+  $("#spPart").addEventListener("change", newQ);
+  $("#spRec").addEventListener("change", () => $("#spRecNote").hidden = !$("#spRec").checked);
+  $("#btnSpStart").addEventListener("click", spStart);
+  $("#btnSpStop").addEventListener("click", spStop);
+  $("#btnSpSave").addEventListener("click", spSave);
+  $("#btnSpDrop").addEventListener("click", spDrop);
+  $("#btnWrQ").addEventListener("click", newWrQ);
+  $("#wrTask").addEventListener("change", newWrQ);
+  $("#btnWrStart").addEventListener("click", wrStart);
+  $("#btnWrDone").addEventListener("click", wrDone);
+  $("#btnWrSave").addEventListener("click", wrSave);
+  $("#btnWrDrop").addEventListener("click", () => { pendingWr = null; $("#wrSelf").hidden = true; });
+  $("#wrText").addEventListener("input", () => $("#wrCount").textContent = countWords($("#wrText").value) + " 词");
+  $("#dlgX").addEventListener("click", () => $("#dlg").close());
+  if ("speechSynthesis" in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+  window.addEventListener("beforeunload", e => {
+    if (wrState || spState) { e.preventDefault(); e.returnValue = ""; }
+  });
+}
+bind(); boot();
+</script>
+</body>
+</html>

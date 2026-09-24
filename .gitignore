@@ -1,0 +1,20 @@
+# 导出的练习数据里有作文全文和成绩 —— 绝对不要提交到公开仓库
+*.json
+!package.json
+backups/
+雅思练习台-*.json
+
+# 系统垃圾
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*~
+
+# Node
+node_modules/
