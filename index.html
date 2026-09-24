@@ -328,6 +328,7 @@ details.method .mbody{padding:0 16px 14px;font-size:13.5px;color:var(--ink2)}
 .mcq .stem{font-weight:600;margin-bottom:6px;display:flex;gap:8px}
 .mcq .stem .qn{flex:0 0 auto}
 .mcq label{display:flex;gap:9px;align-items:flex-start;padding:5px 7px;border-radius:8px;cursor:pointer;font-size:14px}
+.mcq label>b{flex:0 0 auto;min-width:12px}
 .mcq label:hover{background:var(--card2)}
 .mcq input[type=radio]{margin-top:4px;accent-color:var(--accent);width:16px;height:16px;flex:0 0 auto}
 .mcq label.right{background:var(--good-w);color:var(--good);font-weight:600}
@@ -345,7 +346,9 @@ details.method .mbody{padding:0 16px 14px;font-size:13.5px;color:var(--ink2)}
 .optbox b{display:inline-block;min-width:26px;color:var(--ink)}
 .script{font-size:14.5px;line-height:1.85}
 .script .ln{display:flex;gap:10px;padding:4px 0}
-.script .sp{flex:0 0 auto;width:28px;font-size:11.5px;font-weight:700;color:var(--ink3);padding-top:4px}
+.script .sp{flex:0 0 auto;width:64px;font-size:11.5px;font-weight:700;color:var(--ink3);padding-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+.script .sp-M,.script .sp-M2{color:var(--blue)} .script .sp-W,.script .sp-W2{color:var(--rose)}
+.script .ln.nar{color:var(--ink3);font-style:italic}
 .script .ln.cur{background:var(--blue-w);border-radius:8px}
 .script mark{background:var(--amber-w);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
 .script mark sup{color:var(--amber);font-weight:700;margin-right:2px}
@@ -366,8 +369,10 @@ details.method .mbody{padding:0 16px 14px;font-size:13.5px;color:var(--ink2)}
 /* ---------- 阅读 ---------- */
 .exam{display:grid;grid-template-columns:1fr;gap:16px}
 @media (min-width:1000px){
-  .exam.split{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:start}
-  .exam.split .pane{position:sticky;top:calc(var(--hh) + 86px);max-height:calc(100vh - var(--hh) - 100px);overflow:auto}
+  /* 和机考一样：左右两栏各自滚动 */
+  .exam.split{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:stretch;height:calc(100vh - var(--hh) - 170px);min-height:420px}
+  .exam.split .pane,.exam.split .qcol{height:100%;overflow:auto;overscroll-behavior:contain}
+  .exam.split .qcol{padding:0 6px 8px 2px}
 }
 .examBar{position:sticky;top:calc(var(--hh) + 8px);z-index:20;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px;margin:14px 0 0;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
 .examBar .tmr{font-variant-numeric:tabular-nums;font-weight:750;font-size:18px}
@@ -379,9 +384,46 @@ details.method .mbody{padding:0 16px 14px;font-size:13.5px;color:var(--ink2)}
 .passage .psub{font-size:13px;color:var(--ink3);margin-bottom:12px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
 .passage p{margin:0 0 14px;display:flex;gap:12px}
 .passage p .pl{flex:0 0 auto;font-weight:700;color:var(--amber);font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;padding-top:3px;width:14px}
-.passage mark{background:#ffe7a3;color:#1b1b1b;border-radius:3px;padding:0 1px;box-shadow:0 0 0 2px #ffe7a3}
-:root[data-theme="dark"] .passage mark{background:#6b5620;color:#fff;box-shadow:0 0 0 2px #6b5620}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .passage mark{background:#6b5620;color:#fff;box-shadow:0 0 0 2px #6b5620}}
+/* 划词高亮（黄色，和机考一样）与交卷后的「原文依据」（绿色下划线） */
+.hlable{-webkit-user-select:text;user-select:text}
+mark.hl{background:#ffe066;color:#1b1b1b;border-radius:2px;padding:0;cursor:pointer}
+mark.ev{background:rgba(52,168,106,.16);color:inherit;border-bottom:2px solid #2f9e64;border-radius:2px;padding:0 1px}
+mark.hl.ev{background:#ffe066;color:#1b1b1b}
+.hltool{position:fixed;z-index:300;display:flex;gap:2px;background:#1d2421;color:#fff;padding:4px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.hltool .hb{border:0;background:transparent;color:inherit;font:inherit;font-size:13.5px;padding:7px 12px;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.hltool .hb:hover{background:rgba(255,255,255,.14)}
+.hltool .sw{width:13px;height:13px;border-radius:3px;background:#ffe066;display:inline-block}
+/* 当前题目 */
+.curq{box-shadow:0 0 0 2px var(--blue) !important;border-color:var(--blue) !important}
+.gap.curq{border-radius:9px;padding:2px 4px}
+.matchrow.curq{border-radius:10px;padding-left:6px;padding-right:6px}
+/* 底部题号栏 */
+.exnav{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;align-items:center;gap:12px;padding:8px 14px calc(8px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line2);box-shadow:0 -6px 24px rgba(0,0,0,.08)}
+body:not(.in-exam) .exnav{display:none}
+body.in-exam .wrap{padding-bottom:130px}
+.exparts{flex:1;min-width:0;display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none}
+.exparts::-webkit-scrollbar,.exnums::-webkit-scrollbar{display:none}
+.expart{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--card2);border-radius:10px;padding:6px 11px;font:inherit;font-size:12.5px;color:var(--ink2);cursor:pointer;white-space:nowrap;flex:0 0 auto}
+.expart:hover{border-color:var(--accent)}
+.expart.on{background:transparent;border-color:transparent;padding:0;cursor:default;min-width:0;flex:1 1 auto}
+.exlab{font-weight:700;font-size:12.5px;color:var(--ink);white-space:nowrap}
+.excnt{color:var(--ink3);font-variant-numeric:tabular-nums}
+.exnums{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:3px 2px;min-width:0}
+.exq{min-width:31px;height:31px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font:inherit;font-size:12.5px;font-weight:650;color:var(--ink2);cursor:pointer;position:relative;flex:0 0 auto;font-variant-numeric:tabular-nums;padding:0 4px}
+.exq:hover{border-color:var(--blue)}
+.exq.done{background:var(--ink2);color:var(--card);border-color:var(--ink2)}
+.exq.ok{background:var(--good-w);color:var(--good);border-color:var(--good)}
+.exq.no{background:var(--bad-w);color:var(--bad);border-color:var(--bad)}
+.exq.cur{box-shadow:0 0 0 2px var(--blue);border-color:var(--blue)}
+.exq.flag::after{content:"";position:absolute;top:-4px;right:-4px;width:10px;height:10px;border-radius:50%;background:var(--warn);border:2px solid var(--card)}
+.exctl{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.exbtn{display:inline-flex;align-items:center;justify-content:center;gap:5px;height:38px;min-width:42px;border:1px solid var(--line2);background:var(--card);border-radius:11px;cursor:pointer;color:var(--ink2);font:inherit;font-size:13px;padding:0 11px}
+.exbtn:hover{border-color:var(--accent);color:var(--accent)}
+.exbtn.next{background:var(--accent);border-color:var(--accent);color:var(--btn-fg)}
+.exbtn.on{border-color:var(--warn);color:var(--warn);background:var(--warn-w)}
+.exbtn:disabled{opacity:.4;cursor:not-allowed}
+.exauto{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ink2);cursor:pointer;white-space:nowrap}
+.exauto input{accent-color:var(--accent);width:15px;height:15px;margin:0}
 .expl{margin-top:8px;font-size:13px;color:var(--ink2);background:var(--card2);border-radius:10px;padding:9px 12px;line-height:1.65}
 .expl .syn{color:var(--amber);font-weight:600}
 .expl button{margin-top:6px}
@@ -432,6 +474,12 @@ dialog.sheet::backdrop{background:rgba(10,14,12,.45);-webkit-backdrop-filter:blu
   .passage{font-size:15.5px;line-height:1.8}
   .vword{font-size:34px}
   .examBar{padding:8px 10px;gap:8px}
+  body.in-exam nav.tabs{display:none}
+  .exnav{flex-wrap:wrap;gap:6px;padding:6px 10px calc(6px + env(safe-area-inset-bottom))}
+  .exparts{flex:1 1 100%}
+  .exctl{flex:1 1 100%;justify-content:flex-end}
+  .exctl .exauto{margin-right:auto}
+  .exbtn{height:36px}
   .examBar .tmr{font-size:16px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
@@ -461,6 +509,7 @@ dialog.sheet::backdrop{background:rgba(10,14,12,.45);-webkit-backdrop-filter:blu
   <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></symbol>
   <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 2.5 8 12 13l9.5-5z"/><path d="m2.5 12.5 9.5 5 9.5-5M2.5 16.5l9.5 5 9.5-5"/></symbol>
   <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h14l-3.5-3.5M20 16H6l3.5 3.5"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/></symbol>
   <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 2.5h6M10 2.5v6.2L4.6 18.4A2 2 0 0 0 6.3 21.5h11.4a2 2 0 0 0 1.7-3.1L14 8.7V2.5"/></symbol>
 </svg>
 
@@ -1613,11 +1662,13 @@ whereas|conj. 然而；而|Young trees recovered, whereas older ones did not.
 <script>
 /* ================= 内置听力（原创，浏览器朗读） =================
    每行："说话人|显示的文字|朗读用的文字（可省）"
-   说话人：M 男声 / W 女声 / N 旁白 / P 停顿（第二栏是秒数，第三栏是提示文字）
+   说话人：M 男声 / W 女声 / M2、W2 第二个男声、女声 / N 旁白 / P 停顿（第二栏是秒数，第三栏是提示文字）
+   mode：这一节是对话还是独白；cast：每个说话人是谁（交卷后原文里显示）
    [[题号:原文]] 标出答案所在位置 —— 做完题后在原文里高亮。 */
 const LISTENING = [
 {
   id: "T1S1", test: "T1", sec: 1, title: "体育中心会员咨询", en: "Joining a sports centre", kind: "表格填空",
+  mode: "对话 · 2 人", cast: { M: "Daniel（接待员）", W: "Sarah（来电者）" },
   lines: [
     "N|Section 1. You will hear a woman phoning a sports centre to ask about membership. First, you have some time to look at questions 1 to 5.",
     "P|20|先看 1–5 题",
@@ -1679,6 +1730,7 @@ const LISTENING = [
 },
 {
   id: "T1S2", test: "T1", sec: 2, title: "植物园志愿者说明会", en: "Volunteering at a botanic garden", kind: "单选 + 配对",
+  mode: "独白", cast: { W: "Joanna（志愿者负责人）" },
   lines: [
     "N|Section 2. You will hear the volunteer coordinator at a botanic garden talking to a group of new volunteers. First, you have some time to look at questions 11 to 14.",
     "P|20|先看 11–14 题",
@@ -1721,11 +1773,12 @@ const LISTENING = [
 },
 {
   id: "T1S3", test: "T1", sec: 3, title: "河流微塑料课题讨论", en: "A student research project", kind: "单选 + 配对",
+  mode: "讨论 · 3 人", cast: { M: "Tom（学生）", W: "Maya（学生）", W2: "Dr Evans（导师）" },
   lines: [
-    "N|Section 3. You will hear two environmental science students, Maya and Tom, discussing their research project on microplastics in a river. First, you have some time to look at questions 21 to 25.",
+    "N|Section 3. You will hear two environmental science students, Maya and Tom, discussing their research project on microplastics in a river, and then talking to their tutor, Dr Evans. First, you have some time to look at questions 21 to 25.|Section 3. You will hear two environmental science students, Maya and Tom, discussing their research project on microplastics in a river, and then talking to their tutor, Doctor Evans. First, you have some time to look at questions 21 to 25.",
     "P|20|先看 21–25 题",
     "N|Now listen carefully and answer questions 21 to 25.",
-    "M|Hi Maya. Have you got a few minutes to go through the project before we see Dr Evans on Friday?|Hi Maya. Have you got a few minutes to go through the project before we see Doctor Evans on Friday?",
+    "M|Hi Maya. Have you got a few minutes to go through the project before we see Dr Evans this afternoon?|Hi Maya. Have you got a few minutes to go through the project before we see Doctor Evans this afternoon?",
     "W|Sure, Tom. I've brought the sampling notes with me.",
     "M|Great. So, first, she'll probably ask why we chose the River Ashby. I know the Lyne would have been easier, because it's so close to campus.",
     "W|Yes, but the Ashby was the better choice. [[21:The council has been collecting water quality data there for ten years]], so we've got something to compare our results with. For the Lyne there's almost nothing.",
@@ -1746,20 +1799,21 @@ const LISTENING = [
     "M|Agreed. The photos from the microscope are nice, but we can put those in the report.",
     "N|Before you hear the rest of the discussion, you have some time to look at questions 26 to 30.",
     "P|20|先看 26–30 题",
-    "N|Now listen and answer questions 26 to 30.",
-    "M|OK, now the report. Dr Evans said the draft was too long, so we need to decide what to do with each section.|OK, now the report. Doctor Evans said the draft was too long, so we need to decide what to do with each section.",
-    "W|Let's start with the introduction. It's nearly two pages at the moment.",
-    "M|I think most of it is useful background, but [[26:it could be half the length]]. We don't need the whole history of plastic production.",
-    "W|Agreed. What about the methods?",
-    "M|That's the part she said was unclear. Someone else should be able to repeat what we did, and at the moment they couldn't. [[27:We need to explain the filtering and counting in much more detail]].",
-    "W|Fine. And the results tables?",
-    "M|There are eight of them. They're all accurate, but they break up the text. [[28:Why don't we put them in an appendix at the end]], and just keep the summary chart in the main text?",
-    "W|Good idea. Then the discussion. Honestly, I think that's the weakest part. It just repeats the results.",
-    "M|I agree. [[29:I think we should start that section again from the beginning]], and focus on what the results actually mean.",
-    "W|OK. And the references?",
-    "M|I checked them all last night. [[30:They're fine as they are]].",
-    "W|Great. Then let's split the work. I'll do the methods and the discussion, and you do the rest.",
-    "M|Deal.",
+    "N|Now listen and answer questions 26 to 30. Maya and Tom are now meeting their tutor, Dr Evans.|Now listen and answer questions 26 to 30. Maya and Tom are now meeting their tutor, Doctor Evans.",
+    "W2|Come in, both of you, and take a seat. So, you've both read my comments on the draft report?",
+    "W|Yes. You said it was much too long.",
+    "W2|That's right. It's well over the word limit, so let's go through it section by section and decide what to do with each one. Start with the introduction.",
+    "M|It's nearly two pages at the moment.",
+    "W2|Most of it is useful background, but [[26:it could easily be half the length]]. The reader doesn't need the whole history of plastic production.",
+    "W|OK. What about the methods?",
+    "W2|That's the part I was most concerned about. Someone else should be able to repeat what you did, and at the moment they couldn't. [[27:You need to explain the filtering and counting in much more detail]].",
+    "M|Right. And the results tables? There are eight of them.",
+    "W2|They're all accurate, but they break up the text. [[28:I'd put them in an appendix at the end]], and just keep the summary chart in the main text.",
+    "W|That makes sense. And the discussion? Tom and I both thought that was the weakest part.",
+    "W2|I agree. At the moment it just repeats the results. [[29:I'd start that section again from the beginning]], and focus on what the results actually mean.",
+    "M|And the references?",
+    "W2|I checked every one of them. [[30:They're fine as they are]].",
+    "W|Great. Thank you, Dr Evans. We'll split the work between us and send you the new version next week.|Great. Thank you, Doctor Evans. We'll split the work between us and send you the new version next week.",
     "N|That is the end of Section 3."
   ],
   qs: [
@@ -1769,7 +1823,7 @@ const LISTENING = [
       { n: 23, s: "What do they say about the lab work?", o: ["It took longer than expected.", "The microscope was difficult to use.", "The results were unclear."] },
       { n: 24, s: "Tom thinks most of the fibres", o: ["come from fishing equipment.", "are released when clothes are washed.", "are removed at the water treatment works."] },
       { n: 25, s: "In the presentation, they will include", o: ["photos from the microscope.", "a map of the sampling sites.", "a history of plastic production."] }] },
-    { t: "match", instr: "What do the students decide to do with each section of the report? Choose FIVE answers from the box and write the correct letter, A–G.",
+    { t: "match", instr: "What does the tutor suggest doing with each section of the report? Choose FIVE answers from the box and write the correct letter, A–G.",
       opts: [["A", "shorten it"], ["B", "add more detail"], ["C", "move it to the end"], ["D", "rewrite it completely"], ["E", "leave it unchanged"], ["F", "divide it into two parts"], ["G", "add more charts"]],
       items: [[26, "Introduction"], [27, "Methods"], [28, "Results tables"], [29, "Discussion"], [30, "References"]] }
   ],
@@ -1778,6 +1832,7 @@ const LISTENING = [
 },
 {
   id: "T1S4", test: "T1", sec: 4, title: "美洲栗的消失与复兴（讲座）", en: "The American chestnut", kind: "笔记填空",
+  mode: "独白 · 讲座", cast: { M: "讲师" },
   lines: [
     "N|Section 4. You will hear a lecture about the American chestnut tree. First, you have some time to look at questions 31 to 40.",
     "P|30|先看 31–40 题",
@@ -1820,6 +1875,7 @@ const LISTENING = [
 },
 {
   id: "X1", test: "X", sec: 1, title: "合租房间咨询", en: "Renting a room", kind: "表格填空 · 精听专项",
+  mode: "对话 · 2 人", cast: { M: "中介", W: "Anna（学生）" },
   lines: [
     "N|You will hear a student phoning a letting agency about a room to rent. First, you have some time to look at the questions.",
     "P|20|先看题",
@@ -1867,6 +1923,7 @@ const LISTENING = [
 },
 {
   id: "X2", test: "X", sec: 1, title: "办图书馆借书证", en: "Joining a public library", kind: "表格填空 · 精听专项",
+  mode: "对话 · 2 人", cast: { W: "图书管理员", M: "David（新读者）" },
   lines: [
     "N|You will hear a man asking about joining a public library. First, you have some time to look at the questions.",
     "P|20|先看题",
@@ -2045,7 +2102,7 @@ const KEY = "ielts_lab_v2";
 let memoryOnly = false;
 const DEFAULT_STATE = {
   v: 3,
-  settings: { startDate: "2026-09-21", target: 7, each: 6.5, theme: "", dailyNew: 30, deck: "auto", revMode: "auto", rate: 0.9, examOnce: true },
+  settings: { startDate: "2026-09-21", target: 7, each: 6.5, theme: "", dailyNew: 30, deck: "auto", revMode: "auto", rate: 0.9, examOnce: true, autoNext: true, voices: {} },
   daily: {}, dictation: [], words: [], scores: [], bands: [], speaking: [], writing: [], practice: []
 };
 const ARRAY_KEYS = ["dictation", "words", "scores", "bands", "speaking", "writing", "practice"];
@@ -2265,48 +2322,103 @@ function svgNode(w, h) { const s = document.createElementNS("http://www.w3.org/2
 function sv(tag, attrs) { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; }
 function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#888"; }
 
-/* ============================ 朗读（浏览器语音合成） ============================ */
-const TTS = { ok: "speechSynthesis" in window, gb: null, male: null, female: null, n: 0, keep: [] };
-const FEM = /female|kate|serena|stephanie|martha|libby|sonia|hazel|susan|fiona|moira|tessa|karen|samantha|victoria|allison|ava|zira|maisie|emily|amy|jenny|aria|natasha/i;
-const MAL = /\bmale\b|daniel|arthur|oliver|george|ryan|thomas|harry|alfie|fred|rishi|aaron|david|mark|james|guy|william|reed|eddy/i;
+/* ============================ 朗读（浏览器语音合成） ============================
+   听力里每个角色（女、男、第二女声、第二男声、旁白）分配不同的声音：
+   尽量男女不同、口音不同 —— 真实考试里英式、澳洲、北美口音都会出现。
+   以前只在"英式"声音里按名字找女声，Safari / iPhone 上英式女声的名字对不上，
+   结果男女都落到同一个声音上。现在在所有英语声音里挑，名字表也补全了。 */
+const TTS = { ok: "speechSynthesis" in window, all: [], cast: {}, auto: {}, n: 0, keep: [] };
+const ROLES = ["W", "M", "W2", "M2", "N", "V"];
+const ROLE_LAB = { W: "女声", M: "男声", W2: "第二女声", M2: "第二男声", N: "旁白", V: "单词发音" };
+const SAMPLE = { W: "Hello, I'm calling to ask about the membership options.", M: "Good morning, Riverside Sports Centre. How can I help?",
+  W2: "Come in, both of you, and take a seat.", M2: "I think we should explain the method in more detail.",
+  N: "Section one. You will hear a woman phoning a sports centre.", V: "accommodation. The university helps students find accommodation." };
+const ACCENT = { GB: "英式", AU: "澳洲", NZ: "新西兰", IE: "爱尔兰", US: "美式", CA: "加拿大", ZA: "南非", IN: "印度", SG: "新加坡", SC: "苏格兰" };
+const NOVELTY = /\b(albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|deranged|hysterical)\b/i;
+const OLDV = /\b(fred|junior|kathy|ralph|princess|agnes|bruce|vicki)\b/i;
+const ELOQ = /\b(eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley)\b/i;
+const FEM_NAMES = /\b(kate|serena|stephanie|martha|libby|sonia|hazel|susan|fiona|moira|tessa|karen|samantha|victoria|allison|ava|zira|maisie|emily|amy|jenny|aria|natasha|catherine|nicky|zoe|joelle|veena|isha|michelle|ana|emma|sara|clara|bella|hollie|olivia|abbi|heera|neerja|flo|sandy|shelley|grandma|kathy|vicki|agnes|princess|siobhan|nicole|lisa|ruby|evie|tina|jane|laura|lucy|mia|molly|freya|kiara|swara|elsie|annette|carly|kim|tara|leah|ashley|monica|nancy|cora|jessa|aoife|emer)\b/i;
+const MAL_NAMES = /\b(daniel|arthur|oliver|george|harry|ryan|thomas|alfie|elliot|ethan|noah|rishi|aaron|alex|tom|evan|nathan|fred|ralph|reed|rocko|eddy|grandpa|junior|lee|gordon|william|liam|david|guy|mark|christopher|eric|roger|steffan|andrew|brian|james|prabhat|ravi|bruce|oskar|luke|jack|mason|jacob|ken|duncan|conor|connor|darren|tony|neil|mitchell|tim|duncan|jason|davis|kai|ken|wayne|luca|chris|joey|justin|matthew)\b/i;
+function genderOf(v) {
+  const n = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
+  if (/\bfemale\b/.test(n)) return "f";
+  if (/\bmale\b/.test(n)) return "m";
+  if (/google us english/.test(n)) return "f";
+  const c = n.match(/en[-_][a-z]{2}-x-([a-z]{3})/);            // 安卓 Google 语音的代号
+  if (c) { if (/^(gba|gbc|gbg|fis|sfg|iob|iog|tpc|tpf|aua|auc|ahp|cxx|end|ena)$/.test(c[1])) return "f"; if (/^(gbb|gbd|rjs|iol|iom|tpd|aub|aud|ahj|enb|ene)$/.test(c[1])) return "m"; }
+  if (FEM_NAMES.test(n)) return "f";
+  if (MAL_NAMES.test(n)) return "m";
+  return "";
+}
+const regionOf = v => ((String(v.lang).split(/[-_]/)[1] || "").toUpperCase());
+const accentOf = v => v ? (ACCENT[regionOf(v)] || v.lang) : "";
+function qualityOf(v) {
+  const n = v.name.toLowerCase(); let q = 0;
+  if (/premium|优化/.test(n)) q += 50; else if (/enhanced|增强/.test(n)) q += 40;
+  if (/natural|neural/.test(n)) q += 45;
+  if (/google/.test(n)) q += 25;
+  if (ELOQ.test(n)) q -= 35;
+  if (OLDV.test(n)) q -= 30;
+  q += ({ GB: 30, AU: 22, IE: 18, NZ: 18, US: 15, CA: 15, ZA: 10, IN: 5 })[regionOf(v)] || 0;
+  return q;
+}
 function pickVoices() {
   if (!TTS.ok) return;
-  const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang));
-  TTS.n = vs.length;
-  const gb = vs.filter(v => /en[-_]GB/i.test(v.lang));
-  const pool = gb.length ? gb : vs;
-  const byQuality = arr => arr.slice().sort((a, b) => (/enhanced|premium|natural|neural/i.test(b.name) ? 1 : 0) - (/enhanced|premium|natural|neural/i.test(a.name) ? 1 : 0));
-  TTS.female = byQuality(pool.filter(v => FEM.test(v.name)))[0] || null;
-  TTS.male = byQuality(pool.filter(v => !FEM.test(v.name) && MAL.test(v.name)))[0] || null;
-  TTS.gb = gb[0] || vs[0] || null;
-  const note = $("#ttsNote"); if (note) note.hidden = !!gb.length || !vs.length;
-  const vi = $("#voiceInfo"); if (vi) vi.textContent = voiceInfo();
+  const seen = new Set();
+  TTS.all = speechSynthesis.getVoices().filter(v => /^en([-_]|$)/i.test(v.lang) && !NOVELTY.test(v.name))
+    .filter(v => { const k = v.name + "|" + v.lang; if (seen.has(k)) return false; seen.add(k); return true; });
+  TTS.n = TTS.all.length;
+  castVoices();
 }
+function castVoices() {
+  const all = TTS.all.slice().sort((a, b) => qualityOf(b) - qualityOf(a));
+  const fem = all.filter(v => genderOf(v) === "f"), mal = all.filter(v => genderOf(v) === "m"), unk = all.filter(v => !genderOf(v));
+  const not = used => v => !used.includes(v);
+  const a = {};
+  a.W = fem[0] || unk[0] || all[0] || null;
+  a.M = mal[0] || unk.find(not([a.W])) || all.find(not([a.W])) || a.W;
+  a.W2 = fem.find(v => v !== a.W && accentOf(v) !== accentOf(a.W)) || fem.find(not([a.W])) || unk.find(not([a.W, a.M])) || all.find(not([a.W, a.M])) || a.W;
+  a.M2 = mal.find(v => v !== a.M && accentOf(v) !== accentOf(a.M)) || mal.find(not([a.M])) || unk.find(not([a.W, a.M, a.W2])) || all.find(not([a.W, a.M, a.W2])) || a.M;
+  a.N = all.find(v => not([a.W, a.M, a.W2, a.M2])(v) && regionOf(v) === "GB" && qualityOf(v) > 10) || all.find(not([a.W, a.M, a.W2])) || a.W;
+  a.V = all.find(v => regionOf(v) === "GB" && !ELOQ.test(v.name)) || a.W;
+  TTS.auto = a;
+  const pref = S.settings.voices || {};
+  TTS.cast = {};
+  ROLES.forEach(r => { const v = pref[r] && TTS.all.find(x => x.name === pref[r]); TTS.cast[r] = v || a[r] || null; });
+  const note = $("#ttsNote"); if (note) note.hidden = !TTS.n || TTS.all.some(v => regionOf(v) === "GB");
+  refreshVoiceInfo();
+}
+const shortV = v => v ? v.name.replace(/\s*[(（].*$/, "").replace(/^(Microsoft|Google)\s+/, "").replace(/\s+Online.*$/, "") + "（" + accentOf(v) + "）" : "默认";
 function voiceInfo() {
   if (!TTS.ok) return "这个浏览器不支持朗读，听力和听音拼写用不了。换 Safari / Chrome / Edge 试试。";
   if (!TTS.n) return "还没读到系统语音（刚打开页面时偶尔会这样），点一次播放通常就好了。";
-  const m = TTS.male || TTS.gb, f = TTS.female || TTS.gb;
-  const same = m === f;
-  return "朗读声音：" + (f ? f.name : "默认") + (same ? "（只有一个英式声音，男女声用音高区分）" : " / " + (m ? m.name : "默认"));
+  const c = TTS.cast;
+  return "女声 " + shortV(c.W) + " · 男声 " + shortV(c.M) + " · 旁白 " + shortV(c.N) +
+    (c.W === c.M ? "　⚠ 这台设备只找到 1 个英语声音，男女只能靠音高区分 —— 点「声音设置」看怎么多下载几个" : "");
 }
-function voiceFor(spk) { return spk === "M" ? (TTS.male || TTS.gb) : (TTS.female || TTS.gb); }
+function refreshVoiceInfo() { $$(".voiceInfo").forEach(n => n.textContent = voiceInfo()); }
+function voiceFor(spk) { return TTS.cast[spk] || TTS.cast.W || null; }
+// 两个角色落到同一个声音上时，用音高拉开
 function pitchFor(spk) {
-  const v = voiceFor(spk), other = voiceFor(spk === "M" ? "W" : "M");
-  if (v && other && v !== other) return 1;
-  return spk === "M" ? 0.82 : spk === "W" ? 1.12 : 1;
+  const v = voiceFor(spk), order = ["W", "M", "W2", "M2", "N"];
+  const i = order.indexOf(spk);
+  if (i <= 0 || !order.slice(0, i).some(r => voiceFor(r) === v)) return 1;
+  return { M: 0.72, W2: 1.22, M2: 0.62, N: 1.05 }[spk] || 1;
 }
 function utter(text, spk, rate) {
+  if (!TTS.n) pickVoices();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-GB"; u.rate = rate || Number(S.settings.rate) || 0.9;
-  const v = voiceFor(spk || "W"); if (v) u.voice = v;
+  const v = voiceFor(spk || "W");
+  if (v) { u.voice = v; u.lang = v.lang; } else u.lang = "en-GB";          // Safari：lang 和 voice 不一致时会忽略 voice
+  u.rate = rate || Number(S.settings.rate) || 0.9;
   u.pitch = pitchFor(spk || "W");
-  TTS.keep.push(u); if (TTS.keep.length > 20) TTS.keep.shift();     // Chrome：不留引用会被回收，onend 不触发
+  TTS.keep.push(u); if (TTS.keep.length > 30) TTS.keep.shift();     // Chrome：不留引用会被回收，onend 不触发
   return u;
 }
 function speak(text, spk, rate) {
   if (!TTS.ok) { toast("这台设备不支持朗读"); return; }
   try {
-    Player.tok++; Player.on = false; clearInterval(Player.iv);
+    Player.tok++; Player.on = false; clearInterval(Player.iv); clearTimeout(Player.wd);
     if (speechSynthesis.paused) speechSynthesis.resume();
     const u = utter(text, spk, rate);
     // Safari/Chrome：cancel 之后立刻 speak 偶尔会被吞掉，正在读的时候才 cancel，并稍等一下
@@ -2319,10 +2431,10 @@ function splitSentences(t) {
   const m = String(t).match(/[^.!?]+(?:[.!?]+["')\]]*|$)\s*/g);
   return (m || [t]).map(s => s.trim()).filter(Boolean);
 }
-const Player = { list: [], i: 0, on: false, tok: 0, iv: null, cb: {} };
+const Player = { list: [], i: 0, on: false, tok: 0, iv: null, wd: null, cb: {} };
 function playSeq(items, start, cb) {
   if (!TTS.ok) { toast("这台设备不支持朗读"); return; }
-  stopSeq();
+  stopSeq(); if (!TTS.n) pickVoices();
   Player.list = items; Player.i = start || 0; Player.on = true; Player.cb = cb || {};
   const tok = ++Player.tok;
   stepSeq(tok);
@@ -2346,13 +2458,264 @@ function stepSeq(tok) {
   const u = utter(it.say, it.spk, it.rate);
   if (speechSynthesis.paused) speechSynthesis.resume();
   let fired = false;
-  const fin = () => { if (fired) return; fired = true; setTimeout(next, it.gap === undefined ? 380 : it.gap); };
+  const fin = () => { if (fired) return; fired = true; clearTimeout(Player.wd); setTimeout(next, it.gap === undefined ? 380 : it.gap); };
   u.onend = fin;
   u.onerror = e => { if (e && (e.error === "interrupted" || e.error === "canceled")) return; fin(); };
+  // 看门狗：个别联网声音偶尔不回调 onend，整段就卡住了 —— 超时就接着放下一句
+  const words = String(it.say).split(/\s+/).length, rate = u.rate || 1;
+  clearTimeout(Player.wd); Player.wd = setTimeout(fin, 6000 + words * 700 / rate);
   speechSynthesis.speak(u);
 }
 function skipPause() { if (Player.on && Player.list[Player.i] && Player.list[Player.i].pause) { clearInterval(Player.iv); const tok = Player.tok; Player.i++; stepSeq(tok); } }
-function stopSeq() { Player.tok++; Player.on = false; clearInterval(Player.iv); try { if (TTS.ok) speechSynthesis.cancel(); } catch (e) { } }
+function stopSeq() { Player.tok++; Player.on = false; clearInterval(Player.iv); clearTimeout(Player.wd); try { if (TTS.ok) speechSynthesis.cancel(); } catch (e) { } }
+function voiceLabel(v) { if (!v) return "默认声音"; const g = genderOf(v); return v.name + " · " + accentOf(v) + (g ? " · " + (g === "f" ? "女" : "男") : ""); }
+function openVoiceSheet() {
+  pickVoices();
+  const body = el("div");
+  if (!TTS.ok) { body.appendChild(el("div", { class: "warnbox", text: "这个浏览器不支持朗读。换 Safari / Chrome / Edge 试试。" })); sheet("朗读声音", body); return; }
+  body.appendChild(el("p", { class: "hint", style: "margin-top:0", text: "听力里每个角色用不同的声音：对话是两三个人，独白和讲座是一个人，旁白单独一个声音。「自动」会尽量让男女不同、口音不同（真实考试里英式、澳洲、北美口音都会出现）。" }));
+  const opts = TTS.all.slice().sort((a, b) => regionOf(a).localeCompare(regionOf(b)) || qualityOf(b) - qualityOf(a));
+  ROLES.forEach(r => {
+    const sel = el("select", { style: "flex:1;min-width:0", "aria-label": ROLE_LAB[r] });
+    sel.appendChild(el("option", { value: "", text: "自动：" + voiceLabel(TTS.auto[r]) }));
+    opts.forEach(v => sel.appendChild(el("option", { value: v.name, text: voiceLabel(v) })));
+    sel.value = (S.settings.voices || {})[r] || "";
+    sel.addEventListener("change", () => {
+      const vs = Object.assign({}, S.settings.voices || {});
+      if (sel.value) vs[r] = sel.value; else delete vs[r];
+      S.settings.voices = vs; save(); castVoices(); speak(SAMPLE[r], r);
+    });
+    body.appendChild(el("div", { class: "row", style: "margin:8px 0;flex-wrap:nowrap" }, [
+      el("span", { style: "width:68px;flex:0 0 auto;font-size:13px;color:var(--ink2)", text: ROLE_LAB[r] }), sel,
+      el("button", { class: "btn ghost sm", onclick: () => speak(SAMPLE[r], r) }, [ico("i-vol", "sm"), "试听"])]));
+  });
+  body.appendChild(el("div", { class: "note voiceInfo", text: voiceInfo() }));
+  body.appendChild(el("div", { class: "note", text: "这台设备有 " + TTS.n + " 个英语声音。" + (TTS.n < 4 ? "太少了，建议按下面的办法多下载几个：" : "想要更自然的声音，可以按下面的办法下载：") }));
+  body.appendChild(el("div", { class: "infobox", html: "<b>iPhone / iPad</b>：设置 → 辅助功能 → 朗读内容 → 声音 → 英语，下载「英语（英国）」「英语（澳大利亚）」里的几个声音（比如 Daniel、Serena、Karen、Lee），尽量选文件大一些、音质更好的版本。<br><b>Mac</b>：系统设置 → 辅助功能 → 朗读内容 → 系统声音 → 管理声音…，勾选几个英语（英国 / 澳大利亚）的声音。<br><b>Windows</b>：用 Edge 浏览器打开，自带微软「自然」声音（Libby、Ryan、Sonia 等），效果最好。<br>下载完把这个页面彻底关掉再打开。" }));
+  sheet("朗读声音", body, [
+    el("button", { class: "btn ghost", text: "全部恢复自动", onclick: () => { S.settings.voices = {}; save(); castVoices(); $("#dlg").close(); openVoiceSheet(); } }),
+    el("button", { class: "btn", text: "好了", onclick: () => $("#dlg").close() })]);
+}
+</script>
+<script>
+"use strict";
+/* ======================= 考试界面 · 划词高亮 =======================
+   和机考一样：选中文字 → 弹出「高亮」；点已经高亮的地方 → 可以清除。
+   高亮按"第几个字符到第几个字符"存，所以切换文章、交卷、定位原文之后都还在。
+   可高亮的文字都包在 .hlable[data-hl=key] 里，key 在一场考试里唯一。 */
+const HL = { map: {}, ev: {}, text: {} };          // map：你划的；ev：交卷后「原文依据」的定位
+function hlReset() { HL.map = {}; HL.ev = {}; HL.text = {}; hideTool(); }
+function mergeRanges(rs) {
+  const a = rs.filter(r => r[1] > r[0]).sort((x, y) => x[0] - y[0]), out = [];
+  a.forEach(r => { const l = out[out.length - 1]; if (l && r[0] <= l[1]) l[1] = Math.max(l[1], r[1]); else out.push([r[0], r[1]]); });
+  return out;
+}
+function cutRanges(rs, s, e) {
+  const out = [];
+  rs.forEach(([a, b]) => { if (b <= s || a >= e) out.push([a, b]); else { if (a < s) out.push([a, s]); if (b > e) out.push([e, b]); } });
+  return out;
+}
+function hlHTML(key) {
+  const t = HL.text[key] || "", user = HL.map[key] || [], ev = HL.ev[key] || [];
+  if (!user.length && !ev.length) return esc(t);
+  const cuts = Array.from(new Set([0, t.length].concat(...user, ...ev))).filter(x => x >= 0 && x <= t.length).sort((a, b) => a - b);
+  let out = "";
+  for (let i = 0; i < cuts.length - 1; i++) {
+    const a = cuts[i], b = cuts[i + 1]; if (b <= a) continue;
+    const seg = esc(t.slice(a, b));
+    const u = user.some(r => r[0] <= a && r[1] >= b), v = ev.some(r => r[0] <= a && r[1] >= b);
+    out += (u || v) ? '<mark class="' + (u ? "hl" : "") + (v ? " ev" : "") + '" data-a="' + a + '">' + seg + "</mark>" : seg;
+  }
+  return out;
+}
+function hlEl(tag, key, text, cls) {
+  HL.text[key] = String(text);
+  const n = el(tag, { class: "hlable" + (cls ? " " + cls : ""), "data-hl": key });
+  n.innerHTML = hlHTML(key);
+  return n;
+}
+function hlRefresh(key) { document.querySelectorAll('[data-hl="' + key + '"]').forEach(n => { n.innerHTML = hlHTML(key); }); }
+function textOffset(box, node, off) {
+  const r = document.createRange(); r.selectNodeContents(box);
+  try { r.setEnd(node, off); } catch (e) { return 0; }
+  return r.toString().length;
+}
+function selParts() {
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed || !sel.rangeCount) return null;
+  const rg = sel.getRangeAt(0), parts = [];
+  document.querySelectorAll(".hlable").forEach(box => {
+    if (!rg.intersectsNode(box)) return;
+    const t = box.textContent;
+    let s = box.contains(rg.startContainer) ? textOffset(box, rg.startContainer, rg.startOffset) : 0;
+    let e = box.contains(rg.endContainer) ? textOffset(box, rg.endContainer, rg.endOffset) : t.length;
+    while (s < e && /\s/.test(t[s])) s++;
+    while (e > s && /\s/.test(t[e - 1])) e--;
+    if (e > s) parts.push({ key: box.dataset.hl, s, e });
+  });
+  return parts.length ? { parts, rect: rg.getBoundingClientRect() } : null;
+}
+const TOOL = { el: null, info: null, touch: false, t: 0, at: 0 };
+function toolEl() {
+  if (TOOL.el) return TOOL.el;
+  const t = el("div", { class: "hltool", id: "hlTool", role: "toolbar" });
+  t.hidden = true;
+  t.addEventListener("mousedown", e => e.preventDefault());       // 点按钮时别把选区弄没了
+  document.body.appendChild(t); TOOL.el = t; return t;
+}
+function showTool(rect, buttons) {
+  const t = toolEl(); t.innerHTML = ""; buttons.forEach(b => t.appendChild(b)); t.hidden = false;
+  const w = t.offsetWidth, h = t.offsetHeight, cx = rect.left + rect.width / 2;
+  let top = TOOL.touch ? rect.bottom + 12 : rect.top - h - 10;     // 手机上系统菜单在选区上方，工具条放下面
+  if (top < 64) top = rect.bottom + 12;
+  if (top + h > innerHeight - 76) top = Math.max(64, rect.top - h - 10);
+  t.style.left = Math.min(Math.max(8, cx - w / 2), innerWidth - w - 8) + "px";
+  t.style.top = top + "px";
+}
+function hideTool() { if (TOOL.el) TOOL.el.hidden = true; TOOL.info = null; }
+function onSelEnd(ev) {
+  if (ev && ev.target && ev.target.closest && ev.target.closest("#hlTool")) return;
+  const info = selParts();
+  if (!info) { if (!(TOOL.info && TOOL.info.mark && Date.now() - TOOL.at < 400)) hideTool(); return; }
+  TOOL.info = info;
+  const overlap = info.parts.some(p => (HL.map[p.key] || []).some(r => r[0] < p.e && r[1] > p.s));
+  const btns = [el("button", { class: "hb", type: "button", onclick: applyHL }, [el("span", { class: "sw" }), "高亮"])];
+  if (overlap) btns.push(el("button", { class: "hb", type: "button", text: "清除高亮", onclick: clearSelHL }));
+  showTool(info.rect, btns);
+}
+function applyHL() {
+  const info = TOOL.info; if (!info || !info.parts) return;
+  info.parts.forEach(p => { HL.map[p.key] = mergeRanges((HL.map[p.key] || []).concat([[p.s, p.e]])); hlRefresh(p.key); });
+  try { window.getSelection().removeAllRanges(); } catch (e) { }
+  hideTool();
+}
+function clearSelHL() {
+  const info = TOOL.info; if (!info || !info.parts) return;
+  info.parts.forEach(p => { HL.map[p.key] = cutRanges(HL.map[p.key] || [], p.s, p.e); hlRefresh(p.key); });
+  try { window.getSelection().removeAllRanges(); } catch (e) { }
+  hideTool();
+}
+function onMarkClick(ev) {
+  const m = ev.target && ev.target.closest && ev.target.closest("mark.hl");
+  if (!m) return;
+  const sel = window.getSelection(); if (sel && !sel.isCollapsed) return;
+  const box = m.closest(".hlable"); if (!box) return;
+  const key = box.dataset.hl, a = Number(m.dataset.a);
+  const r = (HL.map[key] || []).find(x => x[0] <= a && x[1] > a); if (!r) return;
+  ev.preventDefault(); ev.stopPropagation();                     // 在选项里时，别顺手把选项勾上
+  TOOL.info = { mark: true }; TOOL.at = Date.now();
+  showTool(m.getBoundingClientRect(), [
+    el("button", { class: "hb", type: "button", text: "清除这处高亮", onclick: () => { HL.map[key] = (HL.map[key] || []).filter(x => x !== r); hlRefresh(key); hideTool(); } }),
+    el("button", { class: "hb", type: "button", text: "清除全部", onclick: () => { const ks = Object.keys(HL.map); HL.map = {}; ks.forEach(hlRefresh); hideTool(); } })
+  ]);
+}
+function bindHighlighter() {
+  document.addEventListener("mouseup", ev => setTimeout(() => onSelEnd(ev), 0));
+  document.addEventListener("touchstart", () => { TOOL.touch = true; }, { passive: true });
+  document.addEventListener("selectionchange", () => { if (!TOOL.touch) return; clearTimeout(TOOL.t); TOOL.t = setTimeout(() => onSelEnd(), 380); });
+  document.addEventListener("keyup", ev => { if (ev.shiftKey) onSelEnd(ev); });
+  document.addEventListener("click", onMarkClick, true);
+  document.addEventListener("contextmenu", ev => {                // 右键 → 高亮（和机考一样）
+    if (!(ev.target && ev.target.closest && ev.target.closest(".hlable"))) return;
+    if (!selParts()) return;
+    ev.preventDefault(); onSelEnd();
+  });
+  addEventListener("scroll", () => { if (TOOL.el && !TOOL.el.hidden && !TOOL.touch) hideTool(); }, true);
+  addEventListener("resize", hideTool);
+}
+
+/* ======================= 考试界面 · 题号导航 =======================
+   底部一条和机考一样的题号栏：当前题有框，做过的题实心，标记的题有橙点；
+   左右箭头切换上一题 / 下一题；选完答案自动跳到下一题（可关），填空按回车跳。 */
+let EX = null;
+function exStart(cfg) {
+  exEnd();
+  EX = Object.assign({ flags: new Set(), submitted: false, isRight: () => false, t: 0 }, cfg);
+  EX.cur = EX.parts[0].nums[0];
+  document.body.classList.add("in-exam");
+  renderExNav();
+}
+function exEnd() {
+  if (EX) clearTimeout(EX.t);
+  EX = null;
+  document.body.classList.remove("in-exam");
+  const n = $("#exNav"); if (n) n.remove();
+  $$(".curq").forEach(x => x.classList.remove("curq"));
+  hideTool();
+}
+const exAll = () => EX.parts.reduce((a, p) => a.concat(p.nums), []);
+const exPartOf = n => EX.parts.findIndex(p => p.nums.includes(n));
+function exAnswered(n) { const v = EX.ans[n]; return v !== undefined && v !== null && String(v).trim() !== ""; }
+function exChipCls(n) {
+  let c = "exq";
+  if (EX.submitted) c += EX.isRight(n) ? " ok" : " no";
+  else if (exAnswered(n)) c += " done";
+  if (n === EX.cur) c += " cur";
+  if (EX.flags.has(n)) c += " flag";
+  return c;
+}
+function renderExNav() {
+  if (!EX) return;
+  let bar = $("#exNav");
+  if (!bar) { bar = el("div", { class: "exnav", id: "exNav" }); document.body.appendChild(bar); }
+  bar.innerHTML = "";
+  const cp = exPartOf(EX.cur), parts = el("div", { class: "exparts" });
+  EX.parts.forEach((p, i) => {
+    const done = p.nums.filter(exAnswered).length;
+    if (i === cp) {
+      const nums = el("div", { class: "exnums" });
+      p.nums.forEach(n => nums.appendChild(el("button", { class: exChipCls(n), type: "button", "data-n": n, text: String(n), title: "第 " + n + " 题", onclick: () => goQ(n) })));
+      parts.appendChild(el("div", { class: "expart on" }, [el("span", { class: "exlab", text: p.label }), nums]));
+    } else {
+      parts.appendChild(el("button", { class: "expart", type: "button", onclick: () => goQ(p.nums[0]) }, [
+        el("span", { class: "exlab", text: p.label }),
+        el("span", { class: "excnt", text: EX.submitted ? "对 " + p.nums.filter(n => EX.isRight(n)).length + " / " + p.nums.length : done + " / " + p.nums.length })]));
+    }
+  });
+  const all = exAll(), i = all.indexOf(EX.cur);
+  const auto = el("input", { type: "checkbox" }); auto.checked = S.settings.autoNext !== false;
+  auto.addEventListener("change", () => { S.settings.autoNext = auto.checked; save(); toast(auto.checked ? "选完答案会自动跳到下一题" : "已关闭自动跳题"); });
+  bar.append(parts, el("div", { class: "exctl" }, [
+    EX.submitted ? el("span", { class: "exauto", text: "点题号看解析" }) : el("label", { class: "exauto", title: "选择题选完自动跳到下一题；填空题按回车跳" }, [auto, "自动跳题"]),
+    EX.submitted ? null : el("button", { class: "exbtn" + (EX.flags.has(EX.cur) ? " on" : ""), type: "button", title: "标记这题，交卷前回来检查", onclick: toggleFlag }, [ico("i-flag", "sm"), el("span", { class: "hide-m", text: "标记" })]),
+    el("button", { class: "exbtn", type: "button", title: "上一题", disabled: i <= 0 ? "disabled" : null, onclick: prevQ }, ico("i-left")),
+    el("button", { class: "exbtn next", type: "button", title: "下一题", disabled: i >= all.length - 1 ? "disabled" : null, onclick: nextQ }, ico("i-right"))
+  ]));
+  const cur = bar.querySelector(".exq.cur");
+  if (cur) { const box = cur.parentNode; box.scrollLeft = Math.max(0, cur.offsetLeft - box.clientWidth / 2); }
+}
+function exMarkCur() {
+  $$(".curq").forEach(x => x.classList.remove("curq"));
+  const t = EX && EX.elFor(EX.cur); if (t) t.classList.add("curq");
+}
+function goQ(n, opt) {
+  if (!EX) return; opt = opt || {};
+  clearTimeout(EX.t);
+  const pi = exPartOf(n); if (pi < 0) return;
+  const prev = exPartOf(EX.cur);
+  EX.cur = n;
+  if (pi !== prev && EX.showPart) EX.showPart(pi);
+  exMarkCur(); renderExNav();
+  if (EX.beforeScroll) EX.beforeScroll(n);
+  const t = EX.elFor(n); if (!t) return;
+  t.scrollIntoView({ behavior: opt.instant ? "auto" : "smooth", block: "center" });
+  if (!opt.noFocus) { const inp = t.querySelector('input[type="text"]:not([disabled])'); if (inp) inp.focus({ preventScroll: true }); }
+}
+function nextQ() {
+  if (!EX) return;
+  const a = exAll(), i = a.indexOf(EX.cur);
+  if (i < a.length - 1) goQ(a[i + 1]);
+  else toast(EX.submitted ? "已经是最后一题" : "已经是最后一题了 —— 检查一下就交卷");
+}
+function prevQ() { if (!EX) return; const a = exAll(), i = a.indexOf(EX.cur); if (i > 0) goQ(a[i - 1]); }
+function toggleFlag() { if (!EX) return; if (EX.flags.has(EX.cur)) EX.flags.delete(EX.cur); else EX.flags.add(EX.cur); renderExNav(); }
+// 答了一题：刷新题号栏；选择题（choice=true）按设置自动跳到下一题
+function exOnAnswer(n, choice) {
+  if (!EX || EX.submitted) return;
+  EX.cur = n; exMarkCur(); renderExNav();
+  if (choice && S.settings.autoNext !== false) { clearTimeout(EX.t); EX.t = setTimeout(nextQ, 380); }
+}
+function exOnFocus(n) { if (!EX || EX.cur === n) return; clearTimeout(EX.t); EX.cur = n; exMarkCur(); renderExNav(); }
 </script>
 <script>
 "use strict";
@@ -2665,8 +3028,9 @@ function vHeader(c) {
   $("#vProg").style.width = Math.round(VS.seen / Math.max(1, VS.seen + left + 1) * 100) + "%";
 }
 function sayBtn(text, spk, big) {
+  spk = spk || "V";
   const b = el("button", { class: "spk" + (big ? " big" : ""), title: "朗读", type: "button" }, ico("i-vol"));
-  b.addEventListener("click", ev => { ev.stopPropagation(); speak(text, spk || "W"); });
+  b.addEventListener("click", ev => { ev.stopPropagation(); speak(text, spk); });
   return b;
 }
 function renderVCard() {
@@ -2685,7 +3049,7 @@ function backInfo(c, body) {
   }
   body.appendChild(el("div", { class: "vmean", text: mean }));
   const ex = e ? e.ex : "";
-  if (ex) body.appendChild(el("div", { class: "vex en" }, [ex + " ", sayBtn(ex, "W")]));
+  if (ex) body.appendChild(el("div", { class: "vex en" }, [ex + " ", sayBtn(ex, "V")]));
   if (!e && w && w.src) body.appendChild(el("div", { class: "note", text: "来自：" + w.src }));
   if (deck === "A") {
     const inp = el("input", { type: "text", id: "vMine", class: "en", placeholder: "用 " + word + " 写一句和你自己有关的句子（可不填）", value: (w && w.mine) || "", style: "margin:14px auto 0;max-width:520px;font-size:14px", autocomplete: "off" });
@@ -2698,9 +3062,9 @@ function renderRecall(c, body, btns) {
     body.appendChild(el("div", { class: "vword grp en", text: e.syn.join(" · ") }));
     body.appendChild(el("div", { class: "lab", style: "margin-top:10px", text: "这组词在阅读里替换的是哪个简单意思？" }));
   } else {
-    body.appendChild(el("div", { class: "row center", style: "gap:12px" }, [el("div", { class: "vword en", text: word }), sayBtn(word, "W")]));
+    body.appendChild(el("div", { class: "row center", style: "gap:12px" }, [el("div", { class: "vword en", text: word }), sayBtn(word, "V")]));
     body.appendChild(el("div", { class: "lab", style: "margin-top:10px", text: "先想意思，想好了再翻面" }));
-    if (VS.said === null && c.kind === "new") speak(word, "W");
+    if (VS.said === null && c.kind === "new") speak(word, "V");
   }
   if (VS.said === null) {
     btns.append(
@@ -2729,14 +3093,14 @@ function spellKey(s) {
 }
 function renderSpell(c, body, btns) {
   const { word } = cardInfo(c);
-  body.appendChild(sayBtn(word, "W", true));
+  body.appendChild(sayBtn(word, "V", true));
   body.appendChild(el("div", { class: "lab", style: "margin-top:10px", text: c.kind === "new" ? "新词先测：听发音，拼出来。拼对了算熟词，直接跳过" : "听发音，把词拼出来（英式美式拼法都算对）" }));
   const inp = el("input", { type: "text", class: "spellin en", id: "vSpell", autocomplete: "off", autocapitalize: "off", autocorrect: "off", spellcheck: "false", placeholder: "在这里拼" });
   inp.addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); ev.stopPropagation(); checkSpellCard(); } });
   body.appendChild(inp);
   btns.append(el("button", { class: "btn ghost", text: "不会，看答案", onclick: () => { inp.value = ""; checkSpellCard(true); } }),
     el("button", { class: "btn", text: "对答案 ↵", onclick: () => checkSpellCard() }));
-  speak(word, "W");
+  speak(word, "V");
   setTimeout(() => inp.focus({ preventScroll: true }), 80);
 }
 // 字母级对照：标出正确拼写里哪些字母没拼对（LCS）
@@ -2765,7 +3129,7 @@ function checkSpellCard(giveUp) {
   const wd = el("div", { class: "vword en" });
   if (ok || !typed) { wd.textContent = word; if (!ok) wd.style.color = "var(--bad)"; }
   else charDiff(word, typed).forEach(([ch, hit]) => wd.appendChild(hit ? document.createTextNode(ch) : el("span", { class: "mc", text: ch })));
-  body.appendChild(el("div", { class: "row center", style: "gap:12px" }, [wd, sayBtn(word, "W")]));
+  body.appendChild(el("div", { class: "row center", style: "gap:12px" }, [wd, sayBtn(word, "V")]));
   if (!ok && typed) body.appendChild(el("div", { class: "lab", text: "红底的字母是你漏拼或拼错的地方" }));
   backInfo(c, body);
   if (!ok) {
@@ -2776,7 +3140,7 @@ function checkSpellCard(giveUp) {
   }
   btns.innerHTML = ""; btns.className = "vbtns one";
   btns.append(el("button", { class: "btn" + (ok ? "" : " soft"), onclick: () => vGrade(ok) }, [ok ? (c.kind === "new" ? "熟词，下一个" : "下一个") : "下一个（隔几个词再考）", el("span", { class: "kbd hide-m", text: "↵" })]));
-  speak(word, "W");
+  speak(word, "V");
 }
 function requeue(id) {
   VS.tries[id] = (VS.tries[id] || 0) + 1;
@@ -2879,7 +3243,7 @@ function browseDeck(key, topic) {
     const x = idx.get(ekey(e));
     const st = !x ? el("span", { class: "pill mute", text: "未学" }) : (x.box || 0) >= 3 ? el("span", { class: "pill good", text: "已掌握" }) : el("span", { class: "pill warn", text: "学习中" });
     if (key === "R") return [el("b", { class: "en", text: e.w }), el("div", null, [el("div", { text: e.m }), el("div", { class: "en muted", style: "font-size:12.5px", text: e.syn.join(", ") })]), st];
-    return [el("div", { class: "row", style: "gap:6px;flex-wrap:nowrap" }, [sayBtn(e.w, "W"), el("b", { class: "en", text: e.w })]), el("div", null, [el("div", { text: e.m }), el("div", { class: "en muted", style: "font-size:12.5px", text: e.ex })]), st];
+    return [el("div", { class: "row", style: "gap:6px;flex-wrap:nowrap" }, [sayBtn(e.w, "V"), el("b", { class: "en", text: e.w })]), el("div", null, [el("div", { text: e.m }), el("div", { class: "en muted", style: "font-size:12.5px", text: e.ex })]), st];
   });
   const t = el("table"); t.appendChild(table(key === "R" ? ["简单词", "意思 / 替换词", ""] : ["单词", "意思 / 例句", ""], rows));
   box.appendChild(el("div", { class: "tblwrap", style: "margin-top:10px" }, t));
@@ -2900,18 +3264,25 @@ function renderWords() {
     mean.addEventListener("change", () => { x.meaning = mean.value.trim(); save(); });
     const del = el("button", { class: "btn ghost sm", text: "删", onclick: () => { S.words = S.words.filter(y => y.id !== x.id); save(); renderWords(); renderToday(); renderVocabHome(); } });
     const lvl = (x.box || 0) >= 3 ? "pill good" : "pill warn";
-    return [el("div", { class: "row", style: "gap:6px;flex-wrap:nowrap" }, [x.deck === "R" ? null : sayBtn(x.w, "W"), el("b", { class: "en", text: x.w })]), mean,
+    return [el("div", { class: "row", style: "gap:6px;flex-wrap:nowrap" }, [x.deck === "R" ? null : sayBtn(x.w, "V"), el("b", { class: "en", text: x.w })]), mean,
       el("span", { class: lvl, text: "第 " + ((x.box || 0) + 1) + " 档" }), x.due || "—", x.lapses || 0, del];
   });
   const t = $("#wordTable"); t.innerHTML = "";
   t.appendChild(table(["词", "意思", "档位", "下次复习", "忘过", ""], rows, "单词本是空的 —— 去「背单词」开始，或者在精听里点 + 加词"));
 }
 
+</script>
+<script>
+"use strict";
 /* ======================= 听力：内置材料 ======================= */
 const LBY = {}; LISTENING.forEach(s => LBY[s.id] = s);
 const MARK_RE = /\[\[(\d+):([^\]]+)\]\]/g;
 const plainL = t => String(t).replace(MARK_RE, "$2");
 function parseLine(l) { const p = l.split("|"); return { spk: p[0], text: p[1], say: p[2] || null }; }
+const SPK_DEFAULT = { M: "男", W: "女", M2: "男 2", W2: "女 2", N: "旁白" };
+function spkName(s, spk) { const c = s.cast && s.cast[spk]; return c ? c.split("（")[0] : (SPK_DEFAULT[spk] || spk); }
+function qNums(s) { return Object.keys(s.ans).map(Number).sort((a, b) => a - b); }
+function qRange(s) { const ks = qNums(s); return ks[0] + "–" + ks[ks.length - 1]; }
 function seqOf(sets) {
   const out = [];
   sets.forEach((s, si) => {
@@ -2938,29 +3309,31 @@ function rateSelect() {
   s.addEventListener("change", () => { S.settings.rate = Number(s.value); save(); toast("从下一句开始生效"); });
   return s;
 }
+function voiceBtn() { return el("button", { class: "btn ghost sm", type: "button", title: "每个角色用哪个声音", onclick: openVoiceSheet }, [ico("i-vol", "sm"), "声音设置"]); }
 let LR = null;
 function renderListenHome() {
   const host = $("#lHome"); host.innerHTML = "";
   const w = curWeek(), P = phaseOf(w)[0];
   host.appendChild(el("h2", { class: "sec", text: "听力练习" }));
-  const intro = el("div", { class: "card" }, [
-    el("p", { style: "margin:0 0 8px", html: "原创题，题型和真题一样（表格、笔记、单选、配对），由<b>浏览器朗读</b>。做完能看带答案标记的原文，再<b>逐句精听</b>：一句一句听写、自动对照、跟读，最后记错因。" }),
-    el("div", { class: "warnbox", style: "margin:8px 0", text: "机器朗读比真人录音清楚、没有口音和背景音，分数会偏高。用它练流程、拼写和逐句精听；检查点的成绩以剑雅真题为准（用「精听对照」配合）。" }),
+  host.appendChild(el("div", { class: "card" }, [
+    el("p", { style: "margin:0 0 8px", html: "原创题，题型和真题一样。<b>Section 1 是两人对话，Section 2 是独白，Section 3 是三人讨论，Section 4 是讲座</b>，每个说话人用不同的声音（男女、口音都尽量错开），旁白单独一个声音。做题时可以<b>选中文字高亮</b>，底部有题号栏，选完答案自动跳到下一题。" }),
+    el("div", { class: "warnbox", style: "margin:8px 0", text: "机器朗读比真人录音清楚、没有背景音，分数会偏高。用它练流程、拼写和逐句精听；检查点的成绩以剑雅真题为准（用「精听对照」配合）。" }),
     el("div", { class: "row" }, [
-      el("span", { class: "note", id: "voiceInfo", style: "margin:0;flex:1;min-width:200px", text: voiceInfo() }),
+      el("span", { class: "note voiceInfo", style: "margin:0;flex:1;min-width:220px", text: voiceInfo() }),
+      voiceBtn()
+    ]),
+    el("div", { class: "row", style: "margin-top:8px" }, [
       el("label", { class: "row", style: "gap:6px;font-size:13px;color:var(--ink2);cursor:pointer" }, [
         (() => { const c = el("input", { type: "checkbox", style: "width:16px;height:16px;accent-color:var(--accent)" }); c.checked = S.settings.examOnce !== false; c.addEventListener("change", () => { S.settings.examOnce = c.checked; save(); }); return c; })(),
         "考试模式：交卷前只放一遍"]),
-      rateSelect()
+      el("span", { class: "spacer" }), rateSelect()
     ])
-  ]);
-  host.appendChild(intro);
-  host.appendChild(el("div", { class: "infobox", text: P === "打底" ? "你现在在打底阶段（第 1–8 周）：主练 Section 1–2。建议每天一段：先做题，再逐句精听 + 跟读，最后不看原文复述 1 分钟。" : P === "铺开" ? "铺开阶段：主练 Section 3–4 的学术对话和讲座。" : "强化 / 冲刺阶段：多做整套，按考试节奏来。" }));
-
+  ]));
+  host.appendChild(el("div", { class: "infobox", text: P === "打底" ? "你现在在打底阶段（第 1–8 周）：主练 Section 1–2。建议每天一段：先做题，再逐句精听 + 跟读，最后不看原文复述 1 分钟。" : P === "铺开" ? "铺开阶段：主练 Section 3–4 的学术讨论和讲座。" : "强化 / 冲刺阶段：多做整套，按考试节奏来。" }));
   const t1 = el("div", { class: "card" });
   const bestFull = S.scores.filter(s => s.kind === "listening" && s.book === "内置 Test 1").slice(-1)[0];
   t1.appendChild(el("div", { class: "row between" }, [
-    el("div", null, [el("b", { text: "Test 1 · 整套 40 题" }), el("div", { class: "note", style: "margin:2px 0 0", text: "约 30 分钟，含看题停顿" + (bestFull ? " · 上次 " + bestFull.raw + " 题（" + bestFull.band + "）" : "") })]),
+    el("div", null, [el("b", { text: "Test 1 · 整套 40 题" }), el("div", { class: "note", style: "margin:2px 0 0", text: "约 30 分钟，含看题停顿和最后 2 分钟检查" + (bestFull ? " · 上次 " + bestFull.raw + " 题（" + bestFull.band + "）" : "") })]),
     el("button", { class: "btn", onclick: () => startLTest(["T1S1", "T1S2", "T1S3", "T1S4"]) }, [ico("i-play", "sm"), "整套做"])
   ]));
   ["T1S1", "T1S2", "T1S3", "T1S4"].forEach(id => t1.appendChild(setCard(LBY[id])));
@@ -2975,7 +3348,7 @@ function setCard(s) {
     el("div", { class: "ic blue", text: s.test === "X" ? "S1" : "S" + s.sec }),
     el("div", { class: "ti" }, [
       el("div", { class: "t" }, [s.title, " ", el("span", { class: "muted en", style: "font-weight:400;font-size:13px", text: s.en })]),
-      el("div", { class: "d", text: s.kind + " · 10 题" + (b ? " · 最好 " + b.raw + "/" + b.total : " · 还没做过") })
+      el("div", { class: "d" }, [el("span", { class: "pill " + (/独白/.test(s.mode) ? "purple" : "blue"), style: "margin-right:6px", text: s.mode }), s.kind + " · 10 题" + (b ? " · 最好 " + b.raw + "/" + b.total : " · 还没做过")])
     ]),
     el("div", { class: "row", style: "gap:6px;flex-wrap:nowrap" }, [
       el("button", { class: "btn ghost sm", text: "逐句精听", onclick: ev => { ev.stopPropagation(); startDict(s.id); } }),
@@ -2984,7 +3357,7 @@ function setCard(s) {
   ]);
 }
 function closeLRun() {
-  const leave = () => { stopSeq(); LR = null; $("#lRun").hidden = true; $("#lRun").innerHTML = ""; $("#lHome").hidden = false; renderListenHome(); window.scrollTo({ top: 0 }); };
+  const leave = () => { stopSeq(); if (LR) clearInterval(LR.rv); LR = null; exEnd(); hlReset(); $("#lRun").hidden = true; $("#lRun").innerHTML = ""; $("#lHome").hidden = false; renderListenHome(); window.scrollTo({ top: 0 }); };
   if (LR && LR.mode === "test" && LR.played && !LR.submitted) confirmSheet("退出这次练习？", "还没交卷，退出后这次的答案不会保存。", "退出", leave);
   else leave();
 }
@@ -2999,87 +3372,139 @@ function setPlayUI(on) {
   b.classList.toggle("stop", on); b.innerHTML = ""; b.appendChild(ico(on ? "i-stop" : "i-play"));
 }
 function startLTest(ids) {
-  stopSeq();
+  stopSeq(); exEnd(); hlReset(); if (LR) clearInterval(LR.rv);
+  pickVoices();
   const sets = ids.map(id => LBY[id]);
-  LR = { mode: "test", sets, full: ids.length > 1, ans: {}, submitted: false, played: false, finished: false, pos: 0, seq: seqOf(sets) };
+  LR = { mode: "test", sets, full: ids.length > 1, ans: {}, right: {}, submitted: false, played: false, finished: false, pos: 0, seq: seqOf(sets), part: 0, playPart: -1 };
   $("#lHome").hidden = true;
   const host = $("#lRun"); host.hidden = false; host.innerHTML = "";
-  host.appendChild(lHeader(LR.full ? "Test 1 · 听力整套" : sets[0].title, LR.full ? "40 题" : sets[0].kind));
+  host.appendChild(lHeader(LR.full ? "Test 1 · 听力整套" : sets[0].title, LR.full ? "40 题" : sets[0].mode));
   const player = el("div", { class: "player" }, [
-    el("button", { class: "pbtn", id: "lPlay", title: "播放 / 停止", onclick: togglePlay }, ico("i-play")),
-    el("div", { class: "pinfo" }, [el("div", { class: "pstate", id: "lState", text: "准备好了就点播放" }), el("div", { class: "psub", id: "lSub", text: "先看题，播放后会有看题停顿。" + (S.settings.examOnce !== false ? "考试模式：只放一遍。" : "") })]),
+    el("button", { class: "pbtn", id: "lPlay", title: "播放 / 暂停", onclick: togglePlay }, ico("i-play")),
+    el("div", { class: "pinfo" }, [
+      el("div", { class: "pstate", id: "lState", text: "准备好了就点播放" }),
+      el("div", { class: "psub", id: "lSub", text: (LR.full ? "4 个 Part 会按考试顺序连着放。" : "") + "选中题目文字可以高亮；底部题号栏切题，选完答案自动跳下一题。" + (S.settings.examOnce !== false ? "考试模式：只放一遍。" : "") })]),
     el("button", { class: "btn ghost sm", id: "lSkip", text: "跳过停顿", hidden: true, onclick: skipPause }),
-    rateSelect()
+    rateSelect(), el("button", { class: "btn ghost sm hide-m", type: "button", onclick: openVoiceSheet }, [ico("i-vol", "sm"), "声音"])
   ]);
   host.appendChild(el("div", { class: "card sticky" }, player));
-  sets.forEach(s => host.appendChild(buildQSheet(s)));
+  sets.forEach((s, i) => { const sh = buildQSheet(s); sh.dataset.part = i; if (LR.full && i > 0) sh.hidden = true; host.appendChild(sh); });
   host.appendChild(el("div", { class: "row end", style: "margin:14px 0" }, [el("button", { class: "btn lg", id: "lSubmit", onclick: submitLTest }, [ico("i-check", "sm"), "交卷，看答案"])]));
   host.appendChild(el("div", { id: "lResult" }));
+  exStart({
+    kind: "listen", tab: "listen", ans: LR.ans,
+    parts: sets.map((s, i) => ({ label: "Part " + (LR.full ? i + 1 : (s.test === "X" ? 1 : s.sec)), nums: qNums(s) })),
+    elFor: n => document.getElementById("lg" + n) || document.getElementById("lq" + n) || document.getElementById("lm" + n),
+    showPart: LR.full ? showLPart : null
+  });
+  exMarkCur();
   window.scrollTo({ top: 0 });
+}
+// 整套：和机考一样一次只显示一个 Part 的题；交卷后全部展开方便对答案
+function showLPart(pi) {
+  if (!LR || !LR.full) return;
+  LR.part = pi;
+  $$("#lRun .qsheet[data-part]").forEach(sh => { sh.hidden = !LR.submitted && Number(sh.dataset.part) !== pi; });
 }
 function togglePlay() {
   if (!LR || LR.mode !== "test") return;
   if (Player.on) { LR.pos = Player.i; stopSeq(); setPlayUI(false); $("#lState").textContent = "暂停了"; $("#lSub").textContent = "再点播放会从停下的那句接着放"; $("#lSkip").hidden = true; return; }
   if (LR.finished && !LR.submitted && S.settings.examOnce !== false) { toast("考试模式只放一遍 —— 交卷后可以随便重听"); return; }
   if (LR.finished) LR.pos = 0;
+  clearInterval(LR.rv);
   LR.played = true; setPlayUI(true);
-  const secOf = id => { const s = LBY[id]; return s.test === "X" ? s.title : "Section " + s.sec; };
+  const secOf = id => { const s = LBY[id]; return (s.test === "X" ? s.title : "Part " + s.sec) + " · " + s.mode; };
   playSeq(LR.seq, LR.pos, {
     line: (i, it) => {
       LR.pos = i;
-      if (!it.pause) { $("#lState").innerHTML = "正在播放 · " + esc(secOf(it.set)) + '<span class="wave"><i></i><i></i><i></i><i></i></span>'; $("#lSub").textContent = "第 " + (i + 1) + " / " + LR.seq.length + " 段"; $("#lSkip").hidden = true; }
+      const pi = LR.sets.findIndex(s => s.id === it.set);
+      if (LR.full && pi !== LR.playPart) {                         // 放到下一个 Part 了：题目跟着翻页
+        LR.playPart = pi;
+        if (!LR.submitted && EX && exPartOf(EX.cur) !== pi) goQ(qNums(LR.sets[pi])[0], { noFocus: true });
+      }
+      if (!it.pause) {
+        $("#lState").innerHTML = "正在播放 · " + esc(secOf(it.set)) + '<span class="wave"><i></i><i></i><i></i><i></i></span>';
+        $("#lSub").textContent = "第 " + (i + 1) + " / " + LR.seq.length + " 段"; $("#lSkip").hidden = true;
+      }
     },
-    pause: (left, it) => { $("#lState").textContent = it.label + " · " + mmss(left); $("#lSub").textContent = "趁这会儿看题、圈关键词"; $("#lSkip").hidden = false; },
-    end: () => { LR.finished = true; LR.pos = 0; setPlayUI(false); $("#lSkip").hidden = true; $("#lState").textContent = "播放结束"; $("#lSub").textContent = "检查一下拼写和单复数，然后交卷"; }
+    pause: (left, it) => { $("#lState").textContent = it.label + " · " + mmss(left); $("#lSub").textContent = "趁这会儿看题、把关键词高亮"; $("#lSkip").hidden = false; },
+    end: () => {
+      LR.finished = true; LR.pos = 0; setPlayUI(false); $("#lSkip").hidden = true;
+      if (LR.full && !LR.submitted) startReview();
+      else { $("#lState").textContent = "播放结束"; $("#lSub").textContent = "检查一下拼写和单复数，然后交卷"; }
+    }
   });
 }
-function qRange(s) { const ks = Object.keys(s.ans).map(Number).sort((a, b) => a - b); return ks[0] + "–" + ks[ks.length - 1]; }
-function gapNodes(text, mk) {
-  const out = []; const re = /\{(\d+)\}/g; let last = 0, m;
-  while ((m = re.exec(text))) { if (m.index > last) out.push(text.slice(last, m.index)); out.push(mk(+m[1])); last = re.lastIndex; }
-  if (last < text.length) out.push(text.slice(last));
+// 机考听力放完后有 2 分钟检查时间
+function startReview() {
+  let left = 120;
+  const tick = () => {
+    if (!LR || LR.submitted) { clearInterval(LR && LR.rv); return; }
+    $("#lState").textContent = "检查时间 · " + mmss(left);
+    $("#lSub").textContent = "录音放完了。机考只给 2 分钟检查，时间到就收卷。";
+    if (left <= 0) { clearInterval(LR.rv); beep(); toast("检查时间到 —— 考试里现在已经收卷了，交卷吧"); $("#lState").textContent = "检查时间到"; }
+    left--;
+  };
+  clearInterval(LR.rv); LR.rv = setInterval(tick, 1000); tick();
+}
+function gapNodesHL(text, key, mk) {
+  const out = []; const re = /\{(\d+)\}/g; let last = 0, m, k = 0;
+  while ((m = re.exec(text))) { if (m.index > last) out.push(hlEl("span", key + ":" + (k++), text.slice(last, m.index))); out.push(mk(+m[1])); last = re.lastIndex; }
+  if (last < text.length) out.push(hlEl("span", key + ":" + (k++), text.slice(last)));
   return out;
 }
 function lGap(n) {
   const inp = el("input", { type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false", "aria-label": "第 " + n + " 题" });
   inp.value = LR.ans[n] || "";
-  inp.addEventListener("input", () => { LR.ans[n] = inp.value; });
+  inp.addEventListener("input", () => { LR.ans[n] = inp.value; exOnAnswer(n, false); });
+  inp.addEventListener("focus", () => exOnFocus(n));
+  inp.addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); nextQ(); } });
   return el("span", { class: "gap", id: "lg" + n }, [el("span", { class: "qn", text: n }), inp]);
 }
-function mcqNode(it, name, pick, cur) {
+// 选择题：题干和选项都能高亮；拖选选项文字时不会误勾选项
+function mcqNode(it, name, pick, cur, kp) {
   const box = el("div", { class: "mcq", id: name + it.n });
-  box.appendChild(el("div", { class: "stem" }, [el("span", { class: "qn", text: it.n }), el("span", { class: "en", text: it.s })]));
+  box.appendChild(el("div", { class: "stem" }, [el("span", { class: "qn", text: it.n }), hlEl("span", kp + ":q" + it.n, it.s, "en")]));
   it.o.forEach((o, i) => {
     const L = "ABCD"[i];
     const r = el("input", { type: "radio", name: name + it.n, value: L });
     if (cur === L) r.checked = true;
     r.addEventListener("change", () => pick(it.n, L));
-    box.appendChild(el("label", { "data-l": L }, [r, el("span", { class: "en", html: "<b>" + L + "</b>&nbsp; " + esc(o) })]));
+    r.addEventListener("focus", () => exOnFocus(it.n));
+    const lab = el("label", { "data-l": L }, [r, el("b", { class: "en", text: L }), hlEl("span", kp + ":o" + it.n + L, o, "en")]);
+    lab.addEventListener("click", ev => { const sel = window.getSelection(); if (sel && !sel.isCollapsed) ev.preventDefault(); });
+    box.appendChild(lab);
   });
   return box;
 }
 function buildQSheet(s) {
-  const card = el("div", { class: "card qsheet" });
-  card.appendChild(el("h4", { style: "margin-top:0" }, [s.test === "X" ? s.title + " · " : "Section " + s.sec + " · ", "Questions " + qRange(s)]));
-  const pick = (n, L) => { LR.ans[n] = L; };
-  s.qs.forEach(g => {
-    card.appendChild(el("div", { class: "instr en", text: g.instr }));
+  const card = el("div", { class: "card qsheet", id: "ls-" + s.id });
+  card.appendChild(el("h4", { style: "margin-top:0" }, [(s.test === "X" ? s.title : "Part " + s.sec) + " · Questions " + qRange(s) + "　", el("span", { class: "pill " + (/独白/.test(s.mode) ? "purple" : "blue"), style: "font-weight:500", text: s.mode })]));
+  s.qs.forEach((g, gi) => {
+    const K = "L:" + s.id + ":" + gi;
+    card.appendChild(hlEl("div", K + ":i", g.instr, "instr en"));
     if (g.t === "form" || g.t === "notes") {
-      const f = el("div", { class: "form en" }, el("div", { class: "fh", text: g.title }));
-      if (g.t === "form") g.rows.forEach(r => f.appendChild(el("div", { class: "fr" }, [el("div", { class: "fk", text: r[0] }), el("div", { class: "fv" }, r[2] ? el("i", { class: "muted", text: r[1] }) : gapNodes(r[1], lGap))])));
-      else g.lines.forEach(l => f.appendChild(l.startsWith("## ") ? el("div", { class: "fr", style: "background:var(--card2);font-weight:650" }, l.slice(3)) : el("div", { class: "fr" }, el("div", { class: "fv" }, ["• "].concat(gapNodes(l, lGap))))));
+      const f = el("div", { class: "form en" }, hlEl("div", K + ":t", g.title, "fh"));
+      if (g.t === "form") g.rows.forEach((r, ri) => f.appendChild(el("div", { class: "fr" }, [
+        hlEl("div", K + ":k" + ri, r[0], "fk"),
+        el("div", { class: "fv" }, r[2] ? el("i", { class: "muted", text: r[1] }) : gapNodesHL(r[1], K + ":v" + ri, lGap))])));
+      else g.lines.forEach((l, li) => f.appendChild(l.startsWith("## ")
+        ? el("div", { class: "fr", style: "background:var(--card2);font-weight:650" }, hlEl("span", K + ":h" + li, l.slice(3)))
+        : el("div", { class: "fr" }, el("div", { class: "fv" }, ["• "].concat(gapNodesHL(l, K + ":l" + li, lGap))))));
       card.appendChild(f);
     }
-    if (g.t === "mcq") g.items.forEach(it => card.appendChild(mcqNode(it, "lq", pick, LR.ans[it.n])));
+    if (g.t === "mcq") g.items.forEach(it => card.appendChild(mcqNode(it, "lq", (n, L) => { LR.ans[n] = L; exOnAnswer(n, true); }, LR.ans[it.n], K)));
     if (g.t === "match") {
-      const ob = el("div", { class: "optbox en" }); g.opts.forEach(([L, t]) => ob.appendChild(el("div", null, [el("b", { text: L }), t])));
+      const ob = el("div", { class: "optbox en" });
+      g.opts.forEach(([L, t]) => ob.appendChild(el("div", null, [el("b", { text: L }), hlEl("span", K + ":o" + L, t)])));
       card.appendChild(ob);
       g.items.forEach(([n, lab]) => {
         const sel = el("select", { "aria-label": "第 " + n + " 题" }); sel.appendChild(el("option", { value: "", text: "—" }));
         g.opts.forEach(([L]) => sel.appendChild(el("option", { value: L, text: L })));
         sel.value = LR.ans[n] || "";
-        sel.addEventListener("change", () => { LR.ans[n] = sel.value; });
-        card.appendChild(el("div", { class: "matchrow", id: "lm" + n }, [el("span", { class: "qn", text: n }), el("span", { class: "mt en", text: lab }), sel]));
+        sel.addEventListener("change", () => { LR.ans[n] = sel.value; exOnAnswer(n, !!sel.value); });
+        sel.addEventListener("focus", () => exOnFocus(n));
+        card.appendChild(el("div", { class: "matchrow", id: "lm" + n }, [el("span", { class: "qn", text: n }), hlEl("span", K + ":m" + n, lab, "mt en"), sel]));
       });
     }
   });
@@ -3123,17 +3548,20 @@ function markL(s, n, ok) {
 }
 function submitLTest() {
   if (!LR || LR.submitted) return;
-  const blank = LR.sets.reduce((a, s) => a + Object.keys(s.ans).filter(k => !String(LR.ans[k] || "").trim()).length, 0);
+  const blank = LR.sets.reduce((a, s) => a + qNums(s).filter(k => !String(LR.ans[k] || "").trim()).length, 0);
   const go = () => {
-    stopSeq(); setPlayUI(false);
+    stopSeq(); setPlayUI(false); clearInterval(LR.rv);
     let raw = 0, total = 0; const per = [];
     LR.sets.forEach(s => {
-      let got = 0; const ks = Object.keys(s.ans).map(Number);
-      ks.forEach(n => { const ok = checkL(s.ans[n], LR.ans[n]); if (ok) got++; markL(s, n, ok); });
+      let got = 0; const ks = qNums(s);
+      ks.forEach(n => { const ok = checkL(s.ans[n], LR.ans[n]); LR.right[n] = ok; if (ok) got++; markL(s, n, ok); });
       raw += got; total += ks.length; per.push([s, got, ks.length]);
       S.practice.push({ id: uid(), ts: Date.now(), kind: "listening", set: s.id, raw: got, total: ks.length });
     });
     LR.submitted = true; LR.finished = true;
+    showLPart(0);
+    if (EX) { EX.submitted = true; EX.isRight = n => !!LR.right[n]; EX.showPart = null; renderExNav(); }
+    $("#lState").textContent = "已交卷"; $("#lSub").textContent = "现在可以随便重听；点原文里的 ▶ 从那一句开始放";
     let band = null;
     if (LR.full) { band = bandOf("listening", raw); S.scores.push({ id: uid(), ts: today().getTime(), kind: "listening", raw, band, book: "内置 Test 1" }); S.scores.sort((a, b) => a.ts - b.ts); }
     save();
@@ -3146,12 +3574,12 @@ function submitLTest() {
           el("div", { class: "lab", text: LR.full ? "已记进「成绩」。机器朗读偏简单，真题成绩一般会低一些。" : "单节练习只记在做题记录里，不进成绩曲线。" })])
       ])
     ]);
-    if (LR.full) per.forEach(([s, got, n]) => card.appendChild(el("div", { class: "kv" }, [el("span", { text: "Section " + s.sec + " · " + s.title }), el("b", { text: got + " / " + n })])));
+    if (LR.full) per.forEach(([s, got, n]) => card.appendChild(el("div", { class: "kv" }, [el("span", { text: "Part " + s.sec + " · " + s.title + "（" + s.mode + "）" }), el("b", { text: got + " / " + n })])));
     card.appendChild(el("p", { class: "hint", style: "margin:12px 0 0", html: "下一步（计划里的精听五步）：<b>对完答案先别看原文</b> → 点下面的「逐句精听」，每句最多听 5 遍 → 对照 → 看着原文跟读 3 遍、不看原文再跟 2 遍。" }));
-    card.appendChild(el("div", { class: "row", style: "margin-top:10px" }, LR.sets.map(s => el("button", { class: "btn", onclick: () => startDict(s.id) }, [ico("i-listen", "sm"), "逐句精听" + (LR.full ? " S" + s.sec : "")]))));
+    card.appendChild(el("div", { class: "row", style: "margin-top:10px" }, LR.sets.map(s => el("button", { class: "btn", onclick: () => startDict(s.id) }, [ico("i-listen", "sm"), "逐句精听" + (LR.full ? " Part " + s.sec : "")]))));
     res.appendChild(card);
     LR.sets.forEach(s => {
-      const det = el("details", { class: "card" }, [el("summary", { style: "cursor:pointer;font-weight:650", text: "原文（答案已标出）· " + (s.test === "X" ? s.title : "Section " + s.sec) })]);
+      const det = el("details", { class: "card" }, [el("summary", { style: "cursor:pointer;font-weight:650", text: "原文（答案已标出）· " + (s.test === "X" ? s.title : "Part " + s.sec) + " · " + s.mode })]);
       det.appendChild(transcriptNode(s));
       res.appendChild(det);
     });
@@ -3166,8 +3594,8 @@ function transcriptNode(s) {
     const x = parseLine(l);
     if (x.spk === "P") { box.appendChild(el("div", { class: "pz", text: "（停顿 " + x.text + " 秒 · " + (x.say || "") + "）" })); return; }
     const html = esc(x.text).replace(/\[\[(\d+):([^\]]+)\]\]/g, (_, n, t) => "<mark><sup>" + n + "</sup>" + t + "</mark>");
-    box.appendChild(el("div", { class: "ln", id: "ln-" + s.id + "-" + li }, [
-      el("span", { class: "sp", text: x.spk === "N" ? "" : x.spk === "M" ? "男" : "女" }),
+    box.appendChild(el("div", { class: "ln" + (x.spk === "N" ? " nar" : ""), id: "ln-" + s.id + "-" + li }, [
+      el("span", { class: "sp sp-" + x.spk, text: spkName(s, x.spk) }),
       el("span", { style: "flex:1", html }),
       el("button", { class: "spk", title: "从这句开始放", style: "width:28px;height:28px", onclick: () => playFromLine(s, li) }, ico("i-play", "sm"))
     ]));
@@ -3199,13 +3627,13 @@ function dictUnits(s) {
   return units;
 }
 function startDict(id) {
-  stopSeq();
+  stopSeq(); exEnd(); hlReset(); if (LR) clearInterval(LR.rv);
   const s = LBY[id];
   LR = { mode: "dict", set: s, units: dictUnits(s), i: 0, plays: 0, checked: false, agg: { eq: 0, total: 0, cw: [], fw: 0, n: 0 } };
   showTab("listen"); setSeg("listen", "sets");
   $("#lHome").hidden = true;
   const host = $("#lRun"); host.hidden = false; host.innerHTML = "";
-  host.appendChild(lHeader("逐句精听 · " + s.title, s.test === "X" ? "Section 1 类" : "Section " + s.sec));
+  host.appendChild(lHeader("逐句精听 · " + s.title, (s.test === "X" ? "Section 1 类" : "Part " + s.sec) + " · " + s.mode));
   host.appendChild(el("p", { class: "hint", text: "每句最多听 5 遍，实在写不出就空着点「对照」。红色是漏掉的实词（值得背），橙色是虚词（多半是连读弱读）。对照完看着原文跟读一遍再往下。" }));
   host.appendChild(el("div", { class: "card", id: "dcCard" }));
   host.appendChild(el("div", { id: "dcEnd" }));
@@ -3213,10 +3641,10 @@ function startDict(id) {
   window.scrollTo({ top: 0 });
 }
 function renderDictStep(auto) {
-  const u = LR.units[LR.i], N = LR.units.length, card = $("#dcCard");
+  const u = LR.units[LR.i], N = LR.units.length, card = $("#dcCard"), s = LR.set;
   LR.plays = 0; LR.checked = false;
   card.innerHTML = "";
-  card.appendChild(el("div", { class: "row between" }, [el("span", { class: "pill blue", text: "第 " + (LR.i + 1) + " / " + N + " 句 · " + (u.spk === "M" ? "男声" : "女声") }), el("span", { class: "pill mute", id: "dcPlays", text: "还没听" })]));
+  card.appendChild(el("div", { class: "row between" }, [el("span", { class: "pill blue", text: "第 " + (LR.i + 1) + " / " + N + " 句 · " + spkName(s, u.spk) }), el("span", { class: "pill mute", id: "dcPlays", text: "还没听" })]));
   card.appendChild(el("div", { class: "bar", style: "margin:10px 0 14px" }, el("i", { style: "width:" + (LR.i / N * 100) + "%;background:var(--blue)" })));
   const inp = el("textarea", { id: "dcIn", class: "en", style: "min-height:74px;font-size:16px", placeholder: "听到什么写什么，按 Enter 对照", autocomplete: "off", autocapitalize: "off", spellcheck: "false" });
   inp.addEventListener("keydown", ev => { if (ev.key === "Enter" && !ev.shiftKey) { ev.preventDefault(); LR.checked ? nextDict() : checkDict(); } });
@@ -3271,11 +3699,10 @@ function finishDict() {
   const acc = Math.round(a.eq / Math.max(1, a.total) * 100);
   const end = $("#dcEnd"); end.innerHTML = "";
   const chips = el("div");
-  const card = el("div", { class: "card" }, [
+  end.appendChild(el("div", { class: "card" }, [
     el("div", { class: "scorebig" }, [el("div", { class: "n" }, [acc + "%"]), el("div", null, [el("div", { class: "mid", text: "听对 " + a.eq + " / " + a.total + " 词" }), el("div", { class: "lab", text: "做了 " + a.n + " / " + LR.units.length + " 句 · 漏实词 " + a.cw.length + " · 漏虚词 " + a.fw })])]),
     el("h3", { class: "sub3", text: "漏掉的实词 —— 点 + 加进单词本" }), chips
-  ]);
-  end.appendChild(card);
+  ]));
   const uniq = missChips(chips, a.cw, "精听 · " + s.title);
   const cz = el("div", { class: "card" }, [
     el("h3", { class: "sub3", style: "margin-top:0", text: "这次主要是哪种错？" }),
@@ -3311,7 +3738,7 @@ let RR = null;
 function renderReadHome() {
   const host = $("#rHome"); host.innerHTML = "";
   host.appendChild(el("h2", { class: "sec", text: "阅读练习" }));
-  host.appendChild(el("p", { class: "hint", html: "学术类 Test 1：三篇原创文章、40 题，题型和真题一样。单篇限时 20 分钟，整套 60 分钟。交卷后每题都有<b>原文依据 + 同义替换</b>，点一下就能在原文里标出来 —— 这就是你计划里「整理同义替换」要整理的东西。" }));
+  host.appendChild(el("p", { class: "hint", html: "学术类 Test 1：三篇原创文章、40 题，题型和真题一样。界面照机考做：左边原文、右边题目，<b>选中文字就能高亮</b>（右键也行），底部题号栏切题，<b>选完答案自动跳到下一题</b>。交卷后每题都有<b>原文依据 + 同义替换</b>，点一下就在原文里标出来。" }));
   const bestFull = S.scores.filter(s => s.kind === "reading" && s.book === "内置阅读 Test 1").slice(-1)[0];
   const card = el("div", { class: "card" }, [el("div", { class: "row between" }, [
     el("div", null, [el("b", { text: "Academic Reading · Test 1" }), el("div", { class: "note", style: "margin:2px 0 0", text: "40 题 · 60 分钟" + (bestFull ? " · 上次 " + bestFull.raw + " 题（" + bestFull.band + "）" : "") })]),
@@ -3330,7 +3757,7 @@ function renderReadHome() {
   host.appendChild(el("div", { class: "card flat" }, [
     el("b", { text: "做题顺序（阅读 5.5 → 7.5 的关键）" }),
     el("div", { class: "mgrid", style: "margin-top:10px" }, [
-      el("div", null, [el("b", { text: "① 先看题，圈关键词" }), "人名、年份、专有名词最好定位；判断题和填空题按原文顺序出。"]),
+      el("div", null, [el("b", { text: "① 先看题，高亮关键词" }), "人名、年份、专有名词最好定位；判断题和填空题按原文顺序出。"]),
       el("div", null, [el("b", { text: "② 找替换，不找原词" }), "题干和原文几乎不会用同一个词：important ≈ crucial，not in dispute ↔ disagree。"]),
       el("div", null, [el("b", { text: "③ FALSE ≠ NOT GIVEN" }), "原文反着说 → FALSE；原文压根没说 → NOT GIVEN。别用常识补。"])
     ])
@@ -3340,11 +3767,20 @@ function renderReadHome() {
   const t = el("table"); t.appendChild(table(["日期", "文章", "答对", "用时"], rows, "还没做过"));
   host.appendChild(el("div", { class: "card" }, el("div", { class: "tblwrap" }, t)));
 }
+const splitView = () => matchMedia("(min-width:1000px)").matches;
 function startRead(ids) {
+  exEnd(); hlReset();
   const ps = ids.map(id => RBY[id]);
-  RR = { ps, cur: 0, ans: {}, t0: Date.now(), limit: ps.reduce((a, p) => a + p.mins, 0) * 60, submitted: false, hl: null, view: "p", warned: false };
+  RR = { ps, cur: 0, ans: {}, right: {}, t0: Date.now(), limit: ps.reduce((a, p) => a + p.mins, 0) * 60, submitted: false, view: "p", warned: false, scroll: {} };
   $("#rHome").hidden = true; $("#rRun").hidden = false; $("#wrap").classList.add("wide");
   clearInterval(RR.iv); RR.iv = setInterval(tickRead, 1000);
+  exStart({
+    kind: "read", tab: "read", ans: RR.ans,
+    parts: ps.map(p => ({ label: "Part " + p.n, nums: p.groups.reduce((a, g) => a.concat(g.items.map(it => it.n)), []) })),
+    elFor: n => document.getElementById("rq" + n) || document.getElementById("rm" + n) || document.getElementById("rg" + n),
+    showPart: pi => { RR.cur = pi; renderRun(); },
+    beforeScroll: () => { if (!splitView()) setReadView("q"); }
+  });
   renderRun(); window.scrollTo({ top: 0 });
 }
 function tickRead() {
@@ -3356,67 +3792,61 @@ function tickRead() {
   if (left === 0 && !RR.warned) { RR.warned = true; beep(); toast("时间到 —— 考试里现在就得停笔。可以继续做完，但记得这次超时了"); }
 }
 function exitRead() {
-  const leave = () => { clearInterval(RR && RR.iv); RR = null; $("#rRun").hidden = true; $("#rRun").innerHTML = ""; $("#rHome").hidden = false; $("#wrap").classList.remove("wide"); renderReadHome(); window.scrollTo({ top: 0 }); };
+  const leave = () => { clearInterval(RR && RR.iv); RR = null; exEnd(); hlReset(); $("#rRun").hidden = true; $("#rRun").innerHTML = ""; $("#rHome").hidden = false; $("#wrap").classList.remove("wide"); renderReadHome(); window.scrollTo({ top: 0 }); };
   if (RR && !RR.submitted) confirmSheet("退出这次阅读？", "还没交卷，退出后这次的作答不会保存。", "退出", leave); else leave();
 }
-function renderRun() {
-  const host = $("#rRun"); host.innerHTML = "";
-  const p = RR.ps[RR.cur];
-  const bar = el("div", { class: "examBar" }, [
-    el("button", { class: "btn ghost sm", onclick: exitRead }, [ico("i-left", "sm"), "退出"]),
-    RR.ps.length > 1 ? el("div", { class: "seg", style: "margin:0" }, RR.ps.map((q, i) => el("button", { "aria-selected": String(i === RR.cur), text: "P" + q.n, onclick: () => { RR.cur = i; RR.hl = null; renderRun(); } }))) : el("b", { class: "en", text: p.title }),
-    el("span", { class: "spacer" }),
-    RR.submitted ? el("span", { class: "pill good", text: "已交卷 " + RR.raw + " / " + RR.total }) : el("span", { class: "row", style: "gap:6px" }, [ico("i-clock", "sm"), el("span", { class: "tmr", id: "rTmr", text: mmss(RR.limit) })]),
-    el("div", { class: "seg only-narrow", style: "margin:0" }, [
-      el("button", { "aria-selected": String(RR.view === "p"), "data-v": "p", text: "原文", onclick: () => setReadView("p") }),
-      el("button", { "aria-selected": String(RR.view === "q"), "data-v": "q", text: "题目", onclick: () => setReadView("q") })]),
-    RR.submitted ? null : el("button", { class: "btn sm", onclick: submitRead }, [ico("i-check", "sm"), "交卷"])
-  ]);
-  host.appendChild(bar);
-  const exam = el("div", { class: "exam split", "data-view": RR.view, style: "margin-top:14px" });
-  const pane = el("div", { class: "card pane passage en", id: "rPane", style: "margin:0" });
-  pane.innerHTML = passageHTML(p, RR.hl);
-  const qcol = el("div", { class: "qcol" });
-  if (RR.submitted) qcol.appendChild(readResult());
-  p.groups.forEach(g => qcol.appendChild(groupNode(p, g)));
-  if (!RR.submitted) qcol.appendChild(el("div", { class: "row end", style: "margin:6px 0 20px" }, [
-    RR.cur < RR.ps.length - 1 ? el("button", { class: "btn ghost", onclick: () => { RR.cur++; renderRun(); window.scrollTo({ top: 0 }); } }, ["下一篇", ico("i-right", "sm")]) : null,
-    el("button", { class: "btn", onclick: submitRead }, [ico("i-check", "sm"), "交卷"])]));
-  exam.append(pane, qcol);
-  host.appendChild(exam);
-  tickRead();
-}
-function highlightHTML(t, list) {
-  const rs = [];
-  (list || []).forEach(s => { const i = s ? t.indexOf(s) : -1; if (i >= 0) rs.push([i, i + s.length]); });
-  if (!rs.length) return esc(t);
-  rs.sort((a, b) => a[0] - b[0]);
-  let out = "", last = 0;
-  rs.forEach(([a, b]) => { if (a < last) a = last; if (b <= a) return; out += esc(t.slice(last, a)) + "<mark>" + esc(t.slice(a, b)) + "</mark>"; last = b; });
-  return out + esc(t.slice(last));
-}
-function passageHTML(p, hl) {
-  let h = "<h3>" + esc(p.title) + '</h3><div class="psub">Reading Passage ' + p.n + " · " + esc(p.cn) + " · 建议 " + p.mins + " 分钟</div>";
-  p.paras.forEach(([L, t]) => { h += "<p>" + (L ? '<span class="pl">' + L + "</span>" : "") + "<span>" + highlightHTML(t, hl) + "</span></p>"; });
-  return h;
-}
-const splitView = () => matchMedia("(min-width:1000px)").matches;
 function setReadView(v) {
   if (!RR || RR.view === v) return;
-  RR.scroll = RR.scroll || {};
   if (!splitView()) RR.scroll[RR.view] = window.scrollY;
   RR.view = v;
   const ex = $("#rRun .exam"); if (ex) ex.setAttribute("data-view", v);
   $$("#rRun .only-narrow button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.v === v)));
   if (!splitView()) window.scrollTo({ top: RR.scroll[v] || 0 });
 }
+function renderRun() {
+  const host = $("#rRun"); host.innerHTML = "";
+  const p = RR.ps[RR.cur];
+  host.appendChild(el("div", { class: "examBar" }, [
+    el("button", { class: "btn ghost sm", onclick: exitRead }, [ico("i-left", "sm"), "退出"]),
+    el("b", { class: "en", style: "min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap", text: (RR.ps.length > 1 ? "Part " + p.n + " · " : "") + p.title }),
+    el("span", { class: "spacer" }),
+    RR.submitted ? el("span", { class: "pill good", text: "已交卷 " + RR.raw + " / " + RR.total }) : el("span", { class: "row", style: "gap:6px;flex-wrap:nowrap" }, [ico("i-clock", "sm"), el("span", { class: "tmr", id: "rTmr", text: mmss(RR.limit) })]),
+    el("div", { class: "seg only-narrow", style: "margin:0" }, [
+      el("button", { "aria-selected": String(RR.view === "p"), "data-v": "p", text: "原文", onclick: () => setReadView("p") }),
+      el("button", { "aria-selected": String(RR.view === "q"), "data-v": "q", text: "题目", onclick: () => setReadView("q") })]),
+    RR.submitted ? null : el("button", { class: "btn sm", onclick: submitRead }, [ico("i-check", "sm"), "交卷"])
+  ]));
+  const exam = el("div", { class: "exam split", "data-view": RR.view, style: "margin-top:14px" });
+  const K = "R:" + p.id;
+  const pane = el("div", { class: "card pane passage en", id: "rPane", style: "margin:0" }, [
+    hlEl("h3", K + ":title", p.title),
+    el("div", { class: "psub", text: "Reading Passage " + p.n + " · " + p.cn + " · 建议 " + p.mins + " 分钟 · 选中文字可高亮" })
+  ]);
+  p.paras.forEach(([L, t], i) => pane.appendChild(el("p", null, [L ? el("span", { class: "pl", text: L }) : null, hlEl("span", K + ":p" + i, t)])));
+  const qcol = el("div", { class: "qcol", id: "rQcol" });
+  if (RR.submitted) qcol.appendChild(readResult());
+  p.groups.forEach((g, gi) => qcol.appendChild(groupNode(p, g, gi)));
+  if (!RR.submitted) qcol.appendChild(el("div", { class: "row end", style: "margin:6px 0 20px" }, [
+    RR.cur < RR.ps.length - 1 ? el("button", { class: "btn ghost", onclick: () => goQ(EX.parts[RR.cur + 1].nums[0]) }, ["下一篇", ico("i-right", "sm")]) : null,
+    el("button", { class: "btn", onclick: submitRead }, [ico("i-check", "sm"), "交卷"])]));
+  exam.append(pane, qcol);
+  host.appendChild(exam);
+  exMarkCur();
+  tickRead();
+}
+// 交卷后「在原文中标出依据」：用另一种颜色标出来，不影响你自己划的高亮
 function locate(it) {
-  RR.hl = Array.isArray(it.ev) ? it.ev : [it.ev];
-  const pane = $("#rPane"); if (!pane) return;
-  pane.innerHTML = passageHTML(RR.ps[RR.cur], RR.hl);
+  const p = RR.ps[RR.cur], old = Object.keys(HL.ev);
+  HL.ev = {};
+  (Array.isArray(it.ev) ? it.ev : [it.ev]).forEach(s => {
+    if (!s) return;
+    p.paras.forEach(([, t], i) => { const x = t.indexOf(s); if (x >= 0) { const k = "R:" + p.id + ":p" + i; (HL.ev[k] = HL.ev[k] || []).push([x, x + s.length]); } });
+  });
+  old.concat(Object.keys(HL.ev)).forEach(hlRefresh);
   setReadView("p");
-  const m = pane.querySelector("mark"); if (!m) return;
-  if (splitView()) pane.scrollTo({ top: Math.max(0, m.offsetTop - 90), behavior: "smooth" });
+  const m = document.querySelector("#rPane mark.ev"); if (!m) return;
+  const pane = $("#rPane");
+  if (splitView()) pane.scrollTo({ top: pane.scrollTop + m.getBoundingClientRect().top - pane.getBoundingClientRect().top - 90, behavior: "smooth" });
   else m.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 function checkR(g, it, v) {
@@ -3427,31 +3857,31 @@ function checkR(g, it, v) {
 function explNode(g, it) {
   const ok = checkR(g, it, RR.ans[it.n]);
   const ansTxt = Array.isArray(it.a) ? it.a.join(" / ") : it.a;
-  const box = el("div", { class: "expl" }, [
+  return el("div", { class: "expl" }, [
     el("div", null, [el("b", { style: "color:" + (ok ? "var(--good)" : "var(--bad)"), text: ok ? "✓ 对了" : "✕ 你的答案：" + (RR.ans[it.n] || "（空）") }), "　正确答案：", el("b", { class: "en", text: ansTxt })]),
     it.syn ? el("div", null, ["同义替换：", el("span", { class: "syn en", text: it.syn })]) : null,
     it.why ? el("div", { text: it.why }) : null,
     it.ev ? el("button", { class: "btn ghost sm", onclick: () => locate(it) }, ["在原文中标出依据"]) : null
   ]);
-  return box;
 }
-function groupNode(p, g) {
+function groupNode(p, g, gi) {
+  const K = "R:" + p.id + ":" + gi;
   const box = el("div", { class: "card qsheet", style: "margin:0 0 14px" });
   box.appendChild(el("h4", { style: "margin-top:0", text: "Questions " + g.from + "–" + g.to }));
-  box.appendChild(el("div", { class: "instr en", text: g.instr }));
-  const set = (n, v) => { RR.ans[n] = v; };
+  box.appendChild(hlEl("div", K + ":i", g.instr, "instr en"));
   const done = RR.submitted;
+  const set = (n, v, choice) => { RR.ans[n] = v; exOnAnswer(n, choice); };
   if (g.t === "tfng" || g.t === "ynng") {
     const opts = g.t === "tfng" ? ["TRUE", "FALSE", "NOT GIVEN"] : ["YES", "NO", "NOT GIVEN"];
     g.items.forEach(it => {
       const ok = done && checkR(g, it, RR.ans[it.n]);
-      const q = el("div", { class: "mcq" }, [el("div", { class: "stem" }, [el("span", { class: "qn" + (done ? (ok ? " ok" : " no") : ""), text: it.n }), el("span", { class: "en", text: it.s })])]);
+      const q = el("div", { class: "mcq", id: "rq" + it.n }, [el("div", { class: "stem" }, [el("span", { class: "qn" + (done ? (ok ? " ok" : " no") : ""), text: it.n }), hlEl("span", K + ":q" + it.n, it.s, "en")])]);
       const row = el("div", { class: "tfng" });
       opts.forEach(o => {
         const r = el("input", { type: "radio", name: "rq" + it.n, value: o }); if (RR.ans[it.n] === o) r.checked = true; if (done) r.disabled = true;
-        r.addEventListener("change", () => set(it.n, o));
-        const lab = el("label", { class: done ? (o === it.a ? "right" : RR.ans[it.n] === o ? "wrongpick" : "") : "" }, [r, o]);
-        row.appendChild(lab);
+        r.addEventListener("change", () => set(it.n, o, true));
+        r.addEventListener("focus", () => exOnFocus(it.n));
+        row.appendChild(el("label", { class: done ? (o === it.a ? "right" : RR.ans[it.n] === o ? "wrongpick" : "") : "" }, [r, o]));
       });
       q.appendChild(row);
       if (done) q.appendChild(explNode(g, it));
@@ -3459,7 +3889,7 @@ function groupNode(p, g) {
     });
   }
   if (g.t === "mcq") g.items.forEach(it => {
-    const q = mcqNode(it, "rq", set, RR.ans[it.n]);
+    const q = mcqNode(it, "rq", (n, L) => set(n, L, true), RR.ans[it.n], K);
     if (done) {
       const ok = checkR(g, it, RR.ans[it.n]);
       q.querySelector(".qn").classList.add(ok ? "ok" : "no");
@@ -3469,7 +3899,8 @@ function groupNode(p, g) {
     box.appendChild(q);
   });
   if (g.t === "heading" || g.t === "ending") {
-    const ob = el("div", { class: "optbox en" }); g.list.forEach(([L, t]) => ob.appendChild(el("div", null, [el("b", { text: L }), t])));
+    const ob = el("div", { class: "optbox en" });
+    g.list.forEach(([L, t]) => ob.appendChild(el("div", null, [el("b", { text: L }), hlEl("span", K + ":o" + L, t)])));
     box.appendChild(el("div", { class: "note", style: "margin:0 0 4px", text: g.t === "heading" ? "List of Headings" : "Endings" }));
     box.appendChild(ob);
     if (g.example) box.appendChild(el("div", { class: "note en", style: "margin:0 0 6px", text: "Example: Paragraph " + g.example[0] + " → " + g.example[1] }));
@@ -3477,24 +3908,26 @@ function groupNode(p, g) {
       const sel = el("select", { "aria-label": "第 " + it.n + " 题" }); sel.appendChild(el("option", { value: "", text: "—" }));
       g.list.forEach(([L]) => sel.appendChild(el("option", { value: L, text: L })));
       sel.value = RR.ans[it.n] || ""; if (done) sel.disabled = true;
-      sel.addEventListener("change", () => set(it.n, sel.value));
+      sel.addEventListener("change", () => set(it.n, sel.value, !!sel.value));
+      sel.addEventListener("focus", () => exOnFocus(it.n));
       const ok = done && checkR(g, it, RR.ans[it.n]);
-      const row = el("div", { class: "matchrow" + (done ? (ok ? " ok" : " no") : "") }, [el("span", { class: "qn" + (done ? (ok ? " ok" : " no") : ""), text: it.n }), el("span", { class: "mt en", text: it.s }), sel]);
-      box.appendChild(row);
+      box.appendChild(el("div", { class: "matchrow" + (done ? (ok ? " ok" : " no") : ""), id: "rm" + it.n }, [el("span", { class: "qn" + (done ? (ok ? " ok" : " no") : ""), text: it.n }), hlEl("span", K + ":m" + it.n, it.s, "mt en"), sel]));
       if (done) box.appendChild(explNode(g, it));
     });
   }
   if (g.t === "notes") {
-    const f = el("div", { class: "form en" }, el("div", { class: "fh", text: g.title }));
+    const f = el("div", { class: "form en" }, hlEl("div", K + ":t", g.title, "fh"));
     const mk = n => {
       const it = g.items.find(x => x.n === n);
       const inp = el("input", { type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false", "aria-label": "第 " + n + " 题" });
       inp.value = RR.ans[n] || ""; if (done) inp.disabled = true;
-      inp.addEventListener("input", () => set(n, inp.value));
+      inp.addEventListener("input", () => set(n, inp.value, false));
+      inp.addEventListener("focus", () => exOnFocus(n));
+      inp.addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); nextQ(); } });
       const ok = done && checkR(g, it, RR.ans[n]);
-      return el("span", { class: "gap" + (done ? (ok ? " ok" : " no") : "") }, [el("span", { class: "qn", text: n }), inp]);
+      return el("span", { class: "gap" + (done ? (ok ? " ok" : " no") : ""), id: "rg" + n }, [el("span", { class: "qn", text: n }), inp]);
     };
-    g.lines.forEach(l => f.appendChild(el("div", { class: "fr" }, el("div", { class: "fv", style: "line-height:2.1" }, gapNodes(l, mk)))));
+    g.lines.forEach((l, li) => f.appendChild(el("div", { class: "fr" }, el("div", { class: "fv", style: "line-height:2.1" }, gapNodesHL(l, K + ":l" + li, mk)))));
     box.appendChild(f);
     if (done) g.items.forEach(it => { const d = explNode(g, it); d.insertBefore(el("span", { class: "qn " + (checkR(g, it, RR.ans[it.n]) ? "ok" : "no"), style: "margin-right:6px", text: it.n }), d.firstChild); box.appendChild(d); });
   }
@@ -3509,13 +3942,15 @@ function submitRead() {
     let raw = 0, total = 0;
     RR.ps.forEach(p => {
       let got = 0, tot = 0;
-      p.groups.forEach(g => g.items.forEach(it => { tot++; if (checkR(g, it, RR.ans[it.n])) got++; }));
+      p.groups.forEach(g => g.items.forEach(it => { tot++; const ok = checkR(g, it, RR.ans[it.n]); RR.right[it.n] = ok; if (ok) got++; }));
       raw += got; total += tot; p._got = got; p._tot = tot;
       S.practice.push({ id: uid(), ts: Date.now(), kind: "reading", set: p.id, raw: got, total: tot, secs: RR.ps.length === 1 ? secs : null });
     });
     RR.submitted = true; RR.raw = raw; RR.total = total; RR.secs = secs; RR.view = "q";
     if (RR.ps.length === 3) { RR.band = bandOf("reading", raw); S.scores.push({ id: uid(), ts: today().getTime(), kind: "reading", raw, band: RR.band, book: "内置阅读 Test 1" }); S.scores.sort((a, b) => a.ts - b.ts); }
+    if (EX) { EX.submitted = true; EX.isRight = n => !!RR.right[n]; renderExNav(); }
     save(); renderRun(); renderScores(); renderToday();
+    const q = $("#rQcol"); if (q) q.scrollTop = 0;
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   if (blank) confirmSheet("还有 " + blank + " 题没做", "空着的题按错算。交卷后能看每题的依据和同义替换。", "交卷", go); else go();
@@ -3528,14 +3963,14 @@ function readResult() {
     el("div", null, [el("div", { class: "mid", text: RR.band ? "约 " + RR.band + " 分" : "正确率 " + Math.round(RR.raw / RR.total * 100) + "%" }),
       el("div", { class: "lab", text: "用时 " + mmss(RR.secs) + (over ? "（超时 " + mmss(RR.secs - RR.limit) + "）" : "") + (RR.band ? " · 已记进「成绩」" : "") })])
   ]));
-  if (RR.ps.length > 1) RR.ps.forEach(p => card.appendChild(el("div", { class: "kv" }, [el("span", { class: "en", text: "Passage " + p.n + " · " + p.title }), el("b", { text: p._got + " / " + p._tot })])));
+  if (RR.ps.length > 1) RR.ps.forEach(p => card.appendChild(el("div", { class: "kv" }, [el("span", { class: "en", text: "Part " + p.n + " · " + p.title }), el("b", { text: p._got + " / " + p._tot })])));
   const pairs = [];
   RR.ps.forEach(p => p.groups.forEach(g => g.items.forEach(it => { if (it.syn && it.syn.includes("≈")) it.syn.split(";").forEach(s => { const [a, b] = s.split("≈").map(x => x && x.trim()); if (a && b) pairs.push([a, b]); }); })));
   card.appendChild(el("div", { class: "row", style: "margin-top:12px" }, [
     el("button", { class: "btn soft", onclick: () => synSheet(pairs) }, [ico("i-swap", "sm"), "本次的同义替换（" + pairs.length + " 组）"]),
     el("button", { class: "btn ghost", onclick: () => startRead(RR.ps.map(p => p.id)) }, "重做一遍")
   ]));
-  card.appendChild(el("p", { class: "note", text: "错题先自己回原文找依据，再点「在原文中标出依据」核对。把没想到的替换加进单词本。" }));
+  card.appendChild(el("p", { class: "note", text: "底部题号：绿色对、红色错，点题号直接跳到那题的解析。错题先自己回原文找依据，再点「在原文中标出依据」核对。" }));
   return card;
 }
 function synSheet(pairs) {
@@ -3969,6 +4404,8 @@ function showTab(name) {
   if (cur === "listen" && name !== "listen" && Player.on) { if (LR && LR.mode === "test") { LR.pos = Player.i; setPlayUI(false); } stopSeq(); }
   $$("nav.tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === name)));
   TABS.forEach(t => $("#tab-" + t).hidden = t !== name);
+  document.body.classList.toggle("in-exam", !!EX && EX.tab === name);      // 题号栏只在正在考的那一页出现
+  hideTool();
   $("#wrap").classList.toggle("wide", name === "read" && !!RR);
   try { localStorage.setItem(KEY + "_tab", name); } catch (e) { }
   if (name === "vocab" && !VS) renderVocabHome();
@@ -4059,6 +4496,7 @@ function bind() {
   $("#wrText").addEventListener("input", () => $("#wrCount").textContent = countWords($("#wrText").value) + " 词");
   $("#dlgX").addEventListener("click", () => $("#dlg").close());
   if (TTS.ok) { pickVoices(); speechSynthesis.onvoiceschanged = pickVoices; }
+  bindHighlighter();
   window.addEventListener("beforeunload", e => {
     if (wrState || spState || (RR && !RR.submitted) || (LR && LR.mode === "test" && LR.played && !LR.submitted)) { e.preventDefault(); e.returnValue = ""; }
   });
