@@ -2,7 +2,7 @@
   "name": "雅思每日练习台",
   "short_name": "雅思练习台",
   "description": "雅思自学：背单词、听力精听、阅读限时、口语写作练习和成绩走势",
-  "id": "./",
+  "id": "/ielts-daily-lab/",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
